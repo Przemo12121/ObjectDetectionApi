@@ -3,3 +3,4 @@ DockerVolumes/
 .env
 
 **/obj/**
+**/bin/**
