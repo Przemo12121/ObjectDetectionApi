@@ -1,6 +1,7 @@
 .idea/
 DockerVolumes/
 .env
+*.sln.DotSettings.*
 
 **/obj/**
 **/bin/**
