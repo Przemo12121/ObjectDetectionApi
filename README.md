@@ -15,9 +15,7 @@ System for uploading image and video files to be processed by R-CNN for detectin
 Currently the system uses pretrained Tensorflow object detection model. For detected objects see [reference](#about),
 
 ## What is yet to be done
-- Domain models
 - Persistance
-    - Database
     - File storage
 - Web API (managing files)
 - Microservices
