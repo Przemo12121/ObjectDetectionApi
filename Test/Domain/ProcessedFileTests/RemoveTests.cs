@@ -7,7 +7,7 @@ public class RemoveTests : ProcessedFileTest
     {
         var tested = CreateDummyFile();
         
-        tested.Remove(AccessAccount.Create("first@email.test"));
+        tested.Remove("first@email.test");
 
         GetViewers(tested)
             .Should()

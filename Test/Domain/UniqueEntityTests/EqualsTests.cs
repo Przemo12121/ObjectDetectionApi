@@ -1,6 +1,5 @@
 namespace Domain.UnitTests.UniqueEntityTests;
 
-// ReSharper disable once InconsistentNaming
 public class EqualsTests
 {
     [Fact]

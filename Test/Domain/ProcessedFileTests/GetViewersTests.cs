@@ -10,7 +10,7 @@ public class GetViewersTests
             new("Test/path", MediaTypes.Image),
             new(FileStorages.LocalStorage, "store/path"),
             new("http://url"),
-            new()
+            new[]
             {
                 AccessAccount.Create("firSt@eMail.TESt"), 
                 AccessAccount.Create("second@email.test"),
@@ -18,7 +18,7 @@ public class GetViewersTests
                 AccessAccount.Create("THIRD@email.Test")
             });
 
-        var emails = tested.GetViewers().Select(viewer => viewer.Id);
+        var emails = tested.Viewers.Select(viewer => viewer.Id);
 
         emails.Should().BeEquivalentTo(new[] { "first@email.test", "second@email.test", "third@email.test" });
     }

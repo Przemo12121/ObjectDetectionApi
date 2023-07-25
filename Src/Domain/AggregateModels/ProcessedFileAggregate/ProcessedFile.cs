@@ -2,37 +2,43 @@ using Domain.AggregateModels.AccessAccountAggregate;
 
 namespace Domain.AggregateModels.ProcessedFileAggregate;
 
-public class ProcessedFile : UniqueEntity, IProcessedFile
+public sealed class ProcessedFile : UniqueEntity, IProcessedFile
 {
+    private readonly HashSet<AccessAccount> _viewers;
+
     public StorageData StorageData { get; }
     public ServeData ServeData { get; }
     public Metadata Metadata { get; }
     public AccessAccount Owner { get; }
-    private HashSet<AccessAccount> Viewers { get; }
+
+    public IReadOnlySet<AccessAccount> Viewers
+    {
+        get => _viewers;
+        private init => _viewers = new HashSet<AccessAccount>(value);  // overrides efcore's LegacyReferenceComparer
+    }
 
     public ProcessedFile(
         AccessAccount owner,
         Metadata metadata,
         StorageData storageData,
         ServeData serveData,
-        HashSet<AccessAccount> viewers
+        ICollection<AccessAccount> viewers
     )
-        => (Owner, Metadata, StorageData, ServeData, Viewers) = (owner, metadata, storageData, serveData, viewers);
+        => (Owner, Metadata, StorageData, ServeData, _viewers) = (owner, metadata, storageData, serveData, new(viewers));
 
-    public void Add(AccessAccount viewer) 
-        => Viewers.Add(viewer);
+#pragma warning disable CS8618
+    private ProcessedFile() { }
+#pragma warning restore CS8618
 
-    public void Add(ICollection<AccessAccount> viewers) 
-        => Viewers.UnionWith(viewers);
+    public void Add(AccessAccount viewer)
+        => _viewers.Add(viewer);
 
-    public void Remove(AccessAccount viewer) 
-        => Viewers.Remove(viewer);
-    
-    public void Remove(ICollection<AccessAccount> viewers) 
-        => Viewers.RemoveWhere(viewer => viewers.Contains(viewer));
-    
-    public IReadOnlyList<AccessAccount> GetViewers() 
-        => Viewers
-            .ToList()
-            .AsReadOnly();    
+    public void Add(ICollection<AccessAccount> viewers)
+        => _viewers.UnionWith(viewers);
+
+    public void Remove(AccessAccount viewer)
+        => _viewers.Remove(viewer);
+
+    public void Remove(ICollection<AccessAccount> viewers)
+        => _viewers.RemoveWhere(viewers.Contains);
 }

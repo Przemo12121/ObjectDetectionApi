@@ -4,7 +4,7 @@ public class ProcessedFileTest
 {
     protected HashSet<AccessAccount> GetViewers(ProcessedFile obj)
         => (HashSet<AccessAccount>)typeof(ProcessedFile)
-            .GetField("<Viewers>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .GetField("_viewers", BindingFlags.Instance | BindingFlags.NonPublic)!
             .GetValue(obj)!;
     
     protected ProcessedFile CreateDummyFile()
@@ -13,10 +13,10 @@ public class ProcessedFileTest
             new("filename", MediaTypes.Image),
             new(FileStorages.LocalStorage, "store/path"),
             new("http://url"),
-            new()
+            new AccessAccount[]
             {
-                AccessAccount.Create("first@email.test"), 
-                AccessAccount.Create("second@email.test"),
-                AccessAccount.Create("third@email.test")
+                "first@email.test", 
+                "second@email.test",
+                "third@email.test"
             });
 }

@@ -7,11 +7,11 @@ public class AddTests : ProcessedFileTest
     {
         var tested = CreateDummyFile();
         
-        tested.Add(AccessAccount.Create("fourth@email.test"));
+        tested.Add("fourth@email.test");
 
         GetViewers(tested)
             .Should()
-            .Contain(AccessAccount.Create("fourth@email.test"))
+            .Contain("fourth@email.test")
                 .And.HaveCount(4);
     }
     
@@ -22,15 +22,15 @@ public class AddTests : ProcessedFileTest
         
         tested.Add(new HashSet<AccessAccount>() 
             { 
-                AccessAccount.Create("fifth@email.test"),
-                AccessAccount.Create("fourth@email.test"),
-                AccessAccount.Create("fifth@email.test")
+                "fifth@email.test",
+                "fourth@email.test",
+                "fifth@email.test"
             });
 
         GetViewers(tested)
             .Should()
-            .Contain(AccessAccount.Create("fourth@email.test"))
-                .And.Contain(AccessAccount.Create("fifth@email.test"))
+            .Contain("fourth@email.test")
+                .And.Contain("fifth@email.test")
                 .And.HaveCount(5);
     }
     
@@ -39,11 +39,11 @@ public class AddTests : ProcessedFileTest
     {
         var tested = CreateDummyFile();
         
-        tested.Add(AccessAccount.Create("first@email.test"));
+        tested.Add("first@email.test");
 
         GetViewers(tested)
             .Should()
-            .Contain(AccessAccount.Create("first@email.test"))
+            .Contain("first@email.test")
                 .And.HaveCount(3);
     }
     
@@ -54,14 +54,14 @@ public class AddTests : ProcessedFileTest
         
         tested.Add(new HashSet<AccessAccount>() 
         { 
-            AccessAccount.Create("fourth@email.test"),
-            AccessAccount.Create("first@email.test")
+            "fourth@email.test",
+            "first@email.test"
         });
 
         GetViewers(tested)
             .Should()
-            .Contain(AccessAccount.Create("fourth@email.test"))
-                .And.Contain(AccessAccount.Create("first@email.test"))
+            .Contain("fourth@email.test")
+                .And.Contain("first@email.test")
                 .And.HaveCount(4);
     }
 }

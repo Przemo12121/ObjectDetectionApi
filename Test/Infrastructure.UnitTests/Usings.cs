@@ -1,0 +1,11 @@
+global using Xunit;
+global using Infrastructure.Repositories;
+global using FluentAssertions;
+global using Domain.AggregateModels.OriginalFileAggregate;
+global using Domain.SeedWork.Enums;
+global using Microsoft.EntityFrameworkCore;
+global using Domain.AggregateModels.ProcessedFileAggregate;
+global using System.Reflection;
+global using Domain.AggregateModels;
+global using Domain.AggregateModels.AccessAccountAggregate;
+global using Infrastructure.Database;
