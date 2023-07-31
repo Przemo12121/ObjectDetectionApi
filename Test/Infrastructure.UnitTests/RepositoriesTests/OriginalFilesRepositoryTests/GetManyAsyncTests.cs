@@ -1,4 +1,4 @@
-namespace Infrastructure.UnitTests.OriginalFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.OriginalFilesRepositoryTests;
 
 public class GetManyAsyncTests : BaseRepositoryTests
 {
@@ -8,7 +8,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
         => Repository = new(DbContext);
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnEmptyList_GivenNonExistingOwner()
+    private async void GetManyAsync_ReturnsEmptyList_GivenNonExistingOwner()
     {
         var entities = await Repository.GetManyAsync(
             "non@existing.owner", 
@@ -21,7 +21,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnCorrectEntities_GivenExistingOwner()
+    private async void GetManyAsync_ReturnsCorrectEntities_GivenExistingOwner()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -43,7 +43,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(2)]
     [InlineData(4)]
-    private async void GetManyAsync_ShouldReturnUpToGivenLimit_GivenLimitUnderMaximum(int limit)
+    private async void GetManyAsync_ReturnsUpToGivenLimit_GivenLimitUnderMaximum(int limit)
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -55,7 +55,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldSkipRecordsUpToOffset_GivenOffsetUnderMaximum()
+    private async void GetManyAsync_SkipsRecordsUpToOffset_GivenOffsetUnderMaximum()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -72,7 +72,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnUpMaximumEntities_GivenLimitOverMaximum()
+    private async void GetManyAsync_ReturnsUpMaximumEntities_GivenLimitOverMaximum()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -91,7 +91,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnEntitiesSortedByNameAscending_GivenOrderOfNameAsc()
+    private async void GetManyAsync_ReturnsEntitiesSortedByNameAscending_GivenOrderOfNameAsc()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -104,7 +104,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnEntitiesSortedByNameDescending_GivenOrderOfNameDesc()
+    private async void GetManyAsync_ReturnsEntitiesSortedByNameDescending_GivenOrderOfNameDesc()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -117,7 +117,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnEntitiesSortedByCreationDateTimeAscending_GivenOrderOfDateAsc()
+    private async void GetManyAsync_ReturnsEntitiesSortedByCreationDateTimeAscending_GivenOrderOfDateAsc()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
@@ -130,7 +130,7 @@ public class GetManyAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetManyAsync_ShouldReturnEntitiesSortedByCreationDateTimeDescending_GivenOrderOfDateDesc()
+    private async void GetManyAsync_ReturnsEntitiesSortedByCreationDateTimeDescending_GivenOrderOfDateDesc()
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 

@@ -8,6 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.ConfigureDatabase();
+builder.ConfigureFileStorages();
 
 var app = builder.Build();
 

@@ -1,8 +1,8 @@
-namespace Infrastructure.UnitTests.OriginalFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.OriginalFilesRepositoryTests;
 
 public class DeleteAsyncTests : BaseRepositoryTests
 {
-    private OriginalFilesRepository Repository { get; init; }
+    private OriginalFilesRepository Repository { get; }
     
     public DeleteAsyncTests() : base("OriginalFilesRepositoryTests_DeleteAsyncTests")
         => Repository = new(DbContext);
@@ -11,7 +11,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldDeleteOriginalFile_GivenExistingEntity(int index)
+    public async void DeleteAsync_DeletesOriginalFile_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(OriginalFiles[index]);
 
@@ -20,7 +20,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void DeleteAsync_ShouldNotDeleteAnyEntity_GivenNonExistingEntity()
+    public async void DeleteAsync_NotDeleteAnyEntity_GivenNonExistingEntity()
     {
         OriginalFile nonExisting = new(
             new("non existing file", MediaTypes.Image),
@@ -43,7 +43,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteOtherOriginalFiles_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesOtherOriginalFiles_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(OriginalFiles[index]);
 
@@ -55,7 +55,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteProcessedFiles_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesProcessedFiles_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(OriginalFiles[index]);
 
@@ -67,7 +67,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteAccessAccounts_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesAccessAccounts_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(OriginalFiles[index]);
 

@@ -9,3 +9,6 @@ global using System.Reflection;
 global using Domain.AggregateModels;
 global using Domain.AggregateModels.AccessAccountAggregate;
 global using Infrastructure.Database;
+global using Infrastructure.FileStorage;
+global using Infrastructure.FileStorage.OwnerDirectoryNameProviders;
+global using Moq;

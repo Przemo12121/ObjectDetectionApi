@@ -1,4 +1,4 @@
-namespace Infrastructure.UnitTests.ProcessedFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.ProcessedFilesRepositoryTests;
 
 public class GetAsyncTests : BaseRepositoryTests
 {
@@ -8,7 +8,7 @@ public class GetAsyncTests : BaseRepositoryTests
         => Repository = new(DbContext);
     
     [Fact]
-    private async void GetAsync_ShouldReturnEntity_GivenExistingId()
+    private async void GetAsync_ReturnsEntity_GivenExistingId()
     {
         var entity = await Repository.GetAsync(ProcessedFiles[1].Id);
 
@@ -17,7 +17,7 @@ public class GetAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetAsync_ShouldReturnAllEntityData_GivenExistingId()
+    private async void GetAsync_ReturnsAllEntityData_GivenExistingId()
     {
         var entity = await Repository.GetAsync(ProcessedFiles[1].Id);
 
@@ -26,7 +26,7 @@ public class GetAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    private async void GetAsync_ShouldNotReturnEntity_GivenNonExistingId()
+    private async void GetAsync_NotReturnsEntity_GivenNonExistingId()
     {
         var entity = await Repository.GetAsync(Guid.NewGuid());
 

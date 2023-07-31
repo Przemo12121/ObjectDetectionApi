@@ -3,7 +3,7 @@ namespace Domain.UnitTests.AccessAccountTests;
 public class EqualsTests
 {
     [Fact]
-    public void Equals_True_SameReference()
+    public void Equals_ReturnsTrue_GivenSameReference()
     {
         var a = AccessAccount.Create("first@email.test");
         var b = a;
@@ -25,7 +25,7 @@ public class EqualsTests
     }
     
     [Fact]
-    public void Equals_True_SameEmailWithDifferentCasing()
+    public void Equals_ReturnsTrue_GivenSameEmailWithDifferentCasing()
     {
         var a = AccessAccount.Create("fiRSt@eMaiL.tEst");
         var b = AccessAccount.Create("FirsT@EmaIl.teST");
@@ -36,7 +36,7 @@ public class EqualsTests
     }
     
     [Fact]
-    public void Equals_False_DifferentEmail()
+    public void Equals_ReturnsFalse_GivenDifferentEmail()
     {
         var a = AccessAccount.Create("first@email.test");
         var b = AccessAccount.Create("first@email.test2");

@@ -1,6 +1,4 @@
-using Domain.AggregateModels.AccessAccountAggregate;
-
-namespace Infrastructure.UnitTests.ProcessedFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.ProcessedFilesRepositoryTests;
 
 public class DeleteAsyncTests : BaseRepositoryTests
 {
@@ -13,7 +11,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldDeleteProcessedFile_GivenExistingEntity(int index)
+    public async void DeleteAsync_DeletesProcessedFile_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(ProcessedFiles[index]);
 
@@ -22,7 +20,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void DeleteAsync_ShouldNotDeleteAnyEntity_GivenNonExistingEntity()
+    public async void DeleteAsync_NotDeletesAnyEntity_GivenNonExistingEntity()
     {
         ProcessedFile nonExisting = new(
             AccessAccounts[1],
@@ -47,7 +45,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteOtherProcessedFiles_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesOtherProcessedFiles_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(ProcessedFiles[index]);
 
@@ -59,7 +57,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteOriginalFiles_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesOriginalFiles_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(ProcessedFiles[index]);
 
@@ -71,7 +69,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public async void DeleteAsync_ShouldNotDeleteAccessAccounts_GivenExistingEntity(int index)
+    public async void DeleteAsync_NotDeletesAccessAccounts_GivenExistingEntity(int index)
     {
         await Repository.RemoveAsync(ProcessedFiles[index]);
 

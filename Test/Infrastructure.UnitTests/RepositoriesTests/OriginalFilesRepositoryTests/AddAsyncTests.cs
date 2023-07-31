@@ -1,4 +1,4 @@
-namespace Infrastructure.UnitTests.OriginalFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.OriginalFilesRepositoryTests;
 
 public class AddAsyncTests : BaseRepositoryTests
 {
@@ -8,7 +8,7 @@ public class AddAsyncTests : BaseRepositoryTests
         => Repository = new(DbContext);
 
     [Fact]
-    public async void AddAsync_ShouldCreateNewOriginalFile_GivenNewEntity()
+    public async void AddAsync_CreatesNewOriginalFile_GivenNewEntity()
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),
@@ -23,7 +23,7 @@ public class AddAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void AddAsync_ShouldNotCreateNewAccessAccount_GivenExistingOwner()
+    public async void AddAsync_NotCreatesNewAccessAccount_GivenExistingOwner()
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),
@@ -38,7 +38,7 @@ public class AddAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void AddAsync_ShouldCreateNewAccessAccount_GivenNonExistingOwner()
+    public async void AddAsync_CreatesNewAccessAccount_GivenNonExistingOwner()
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),

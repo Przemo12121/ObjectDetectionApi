@@ -1,6 +1,4 @@
-using Domain.AggregateModels.AccessAccountAggregate;
-
-namespace Infrastructure.UnitTests.ProcessedFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.ProcessedFilesRepositoryTests;
 
 public class AddAsyncTests : BaseRepositoryTests
 {
@@ -10,7 +8,7 @@ public class AddAsyncTests : BaseRepositoryTests
         => Repository = new(DbContext);
 
     [Fact]
-    public async void AddAsync_ShouldCreateNewProcessedFile_GivenNewEntity()
+    public async void AddAsync_CreatesNewProcessedFile_GivenNewEntity()
     {
         ProcessedFile newEntity = new(
             AccessAccounts[3],
@@ -33,7 +31,7 @@ public class AddAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void AddAsync_ShouldNotCreateNewAccessAccounts_GivenExistingOwnerAndViewers()
+    public async void AddAsync_NotCreatesNewAccessAccounts_GivenExistingOwnerAndViewers()
     {
         ProcessedFile newEntity = new(
             AccessAccounts[3],
@@ -55,7 +53,7 @@ public class AddAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void AddAsync_ShouldCreateNewAccessAccount_GivenNonExistingOwner()
+    public async void AddAsync_CreatesNewAccessAccount_GivenNonExistingOwner()
     {
         ProcessedFile newEntity = new(
             "new.owner@access.account",
@@ -77,7 +75,7 @@ public class AddAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void AddAsync_ShouldCreateOnlyNewAccessAccounts_GivenNonExistingViewers()
+    public async void AddAsync_CreatesOnlyNewAccessAccounts_GivenNonExistingViewers()
     {
         ProcessedFile newEntity = new(
             AccessAccounts[3],

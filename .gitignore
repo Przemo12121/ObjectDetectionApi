@@ -5,3 +5,4 @@ DockerVolumes/
 
 **/obj/**
 **/bin/**
+FILES/*

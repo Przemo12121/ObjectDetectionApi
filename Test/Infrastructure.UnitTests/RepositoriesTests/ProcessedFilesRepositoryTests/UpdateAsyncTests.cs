@@ -1,4 +1,4 @@
-namespace Infrastructure.UnitTests.ProcessedFilesRepositoryTests;
+namespace Infrastructure.UnitTests.RepositoriesTests.ProcessedFilesRepositoryTests;
 
 public class UpdateAsyncTests : BaseRepositoryTests
 {
@@ -8,7 +8,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
         => Repository = new(DbContext);
 
     [Fact]
-    public async void UpdateAsync_ShouldNotCreateNewProcessedFile_GivenExistingEntity()
+    public async void UpdateAsync_NotCreatesNewProcessedFile_GivenExistingEntity()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[9] });
@@ -22,7 +22,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldNotCreateAccessAccounts_GivenExistingViewers()
+    public async void UpdateAsync_NotCreatesAccessAccounts_GivenExistingViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[9] });
@@ -36,7 +36,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldCreateAccessAccounts_GivenNonExistingViewers()
+    public async void UpdateAsync_CreatesAccessAccounts_GivenNonExistingViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[9] });
@@ -51,7 +51,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldUpdateEntityViewers_GivenChangesToViewers()
+    public async void UpdateAsync_UpdatesEntityViewers_GivenChangesToViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[1], AccessAccounts[9], AccessAccounts[4] });
@@ -83,7 +83,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldNotUpdateEntityOwner_GivenChangesToViewers()
+    public async void UpdateAsync_NotUpdatesEntityOwner_GivenChangesToViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[1], AccessAccounts[9], AccessAccounts[4] });
@@ -107,7 +107,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldNotUpdateEntityData_GivenChangesToViewers()
+    public async void UpdateAsync_NotUpdatesEntityData_GivenChangesToViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[1], AccessAccounts[9], AccessAccounts[4] });
@@ -139,7 +139,7 @@ public class UpdateAsyncTests : BaseRepositoryTests
     }
     
     [Fact]
-    public async void UpdateAsync_ShouldNotUpdateOtherEntitiesViewers_GivenChangesToViewers()
+    public async void UpdateAsync_NotUpdatesOtherEntitiesViewers_GivenChangesToViewers()
     {
         var entity = ProcessedFiles[2];
         entity.Remove(new[] { AccessAccounts[1], AccessAccounts[1], AccessAccounts[9], AccessAccounts[4] });

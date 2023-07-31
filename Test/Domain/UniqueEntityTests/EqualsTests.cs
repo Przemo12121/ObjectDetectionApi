@@ -3,7 +3,7 @@ namespace Domain.UnitTests.UniqueEntityTests;
 public class EqualsTests
 {
     [Fact]
-    public void Equals_True_SameReference()
+    public void Equals_ReturnsTrue_GivenSameReference()
     {
         var a = new A();
         var b = a;
@@ -14,7 +14,7 @@ public class EqualsTests
     }
     
     [Fact]
-    public void Equals_True_SameClassAndId()
+    public void Equals_ReturnsTrue_GivenSameClassAndId()
     {
         var a = new A();
         var b = new A();
@@ -29,7 +29,7 @@ public class EqualsTests
     }
     
     [Fact]
-    public void Equals_False_SameClassAndDifferentId()
+    public void Equals_ReturnsFalse_GivenSameClassAndDifferentId()
     {
         var a = new A();
         var b = new A();
@@ -40,7 +40,7 @@ public class EqualsTests
     }
     
     [Fact]
-    public void Equals_False_DifferentClassAndSameId()
+    public void Equals_ReturnsFalse_GivenDifferentClassAndSameId()
     {
         var a = new A();
         var b = new B();

@@ -3,7 +3,7 @@ namespace Domain.UnitTests.ProcessedFileTests;
 public class RemoveTests : ProcessedFileTest
 {
     [Fact]
-    public void Remove_RemovesFromViewers_SingleViewer()
+    public void Remove_RemovesFromViewers_GivenSingleViewer()
     {
         var tested = CreateDummyFile();
         
@@ -16,7 +16,7 @@ public class RemoveTests : ProcessedFileTest
     }
     
     [Fact]
-    public void Remove_RemovesFromViewers_MultipleViewer()
+    public void Remove_RemovesFromViewers_GivenMultipleViewer()
     {
         var tested = CreateDummyFile();
         
@@ -34,7 +34,7 @@ public class RemoveTests : ProcessedFileTest
     }
     
     [Fact]
-    public void Remove_SkipsNonExisting_SingleViewer()
+    public void Remove_SkipsNonExisting_GivenSingleViewer()
     {
         var tested = CreateDummyFile();
         
@@ -47,7 +47,7 @@ public class RemoveTests : ProcessedFileTest
     }
     
     [Fact]
-    public void Remove_SkipsNonExisting_MultipleViewer()
+    public void Remove_SkipsNonExisting_GivenMultipleViewer()
     {
         var tested = CreateDummyFile();
         
