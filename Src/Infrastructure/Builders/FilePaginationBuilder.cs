@@ -1,41 +1,56 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Domain.AggregateModels;
+using Domain.SeedWork.Enums;
 using Domain.SeedWork.Interfaces;
 
 namespace Infrastructure.Builders;
 
-public sealed class FilePaginationBuilder<T> : IPaginationBuilder<T>
+public sealed class FilePaginationBuilder<T> : IFilePaginationBuilder<T>
     where T : UniqueEntity, IFile
 {
     private IQueryable<T> Query { get; set; }
     private int Limit { get; set; }
     private int Offset { get; set; }
+    private QueryMediaTypes Selection { get; set; }
     private string Order { get; set; } = String.Empty;
 
     public FilePaginationBuilder(IQueryable<T> query)
         => Query = query;
 
-    public IPaginationBuilder<T> ApplyLimit(int limit)
+    public IFilePaginationBuilder<T> ApplyLimit(int limit)
     {
         Limit = limit;
         return this;
     }
 
-    public IPaginationBuilder<T> ApplyOffset(int offset)
+    public IFilePaginationBuilder<T> ApplyOffset(int offset)
     {
         Offset = offset;
         return this;
     }
     
-    public IPaginationBuilder<T> ApplyOrder(string order)
+    public IFilePaginationBuilder<T> ApplyOrder(string order)
     {
         Order = order.Trim().ToLower();
         return this;
     }
-    
+
+    public IFilePaginationBuilder<T> ApplySelection(QueryMediaTypes type)
+    {
+        Selection = type;
+        return this;
+    }
+
     public IQueryable<T> Build()
     {
+        Query = Selection switch
+        {
+            QueryMediaTypes.Images => Query.Where(file => file.Metadata.Type.Equals(MediaTypes.Image)),
+            QueryMediaTypes.Videos => Query.Where(file => file.Metadata.Type.Equals(MediaTypes.Video)),
+            _ => Query
+        };
+            
         switch (Order.Split(","))
         {
             case []:

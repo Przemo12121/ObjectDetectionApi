@@ -1,6 +1,6 @@
 namespace Domain.AggregateModels.ProcessedFileAggregate;
 
-public interface IProcessedFileRepository : IUniqueEntityRepository<ProcessedFile>
+public interface IProcessedFileRepository : IFileRepository<ProcessedFile>
 {
     Task UpdateAsync(ProcessedFile entity);
 }

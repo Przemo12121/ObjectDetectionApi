@@ -33,7 +33,7 @@ public sealed class ProcessedFilesRepository : BaseRepository, IProcessedFileRep
         await DbContext.SaveChangesAsync();
     }
 
-    public Task<List<ProcessedFile>> GetManyAsync(AccessAccount owner, Func<IPaginationBuilder<ProcessedFile>, IPaginationBuilder<ProcessedFile>> configurePagination)
+    public Task<List<ProcessedFile>> GetManyAsync(AccessAccount owner, Func<IFilePaginationBuilder<ProcessedFile>, IFilePaginationBuilder<ProcessedFile>> configurePagination)
     {
         var query = DbContext.ProcessedFiles
             .Where(file => file.Owner.Equals(owner));

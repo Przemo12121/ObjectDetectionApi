@@ -15,9 +15,10 @@ System for uploading image and video files to be processed by R-CNN for detectin
 Currently the system uses pretrained Tensorflow object detection model. For detected objects see [reference](#about),
 
 ## What is yet to be done
-- Persistance
-    - File storage
-- Web API (managing files)
+- Web API
+  - endpoints for managing files
+  - OAuth2 (ex. Msc, Facebook, Google)
+  - HTML exported documentation, endpoint for getting docs
 - Microservices
     - RabbitMQ
     - R-CNN

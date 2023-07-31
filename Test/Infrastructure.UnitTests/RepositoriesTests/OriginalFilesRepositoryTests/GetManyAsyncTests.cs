@@ -12,7 +12,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             "non@existing.owner", 
-            builder => builder.ApplyLimit(3)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(3)
                 .ApplyOffset(2)
                 .ApplyOrder("name:asc"));
 
@@ -25,7 +26,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -47,7 +49,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(limit)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(limit)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -59,7 +62,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(2)
                 .ApplyOrder("name:asc"));
 
@@ -76,7 +80,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -95,7 +100,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -108,7 +114,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:desc"));
 
@@ -121,7 +128,8 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("date:asc"));
 
@@ -134,11 +142,68 @@ public class GetManyAsyncTests : BaseRepositoryTests
     {
         var entities = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplyLimit(100)
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("date:desc"));
 
         entities.Should()
             .BeInDescendingOrder(entity => entity.CreationDateTime);
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsEntitiesWithAnyMetadataType_GivenQueryMediaTypesOfAll()
+    {
+        var entities = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            builder => builder.ApplySelection(QueryMediaTypes.All)
+                .ApplyLimit(100)
+                .ApplyOffset(0)
+                .ApplyOrder("name:asc"));
+
+        entities.Should()
+            .BeEquivalentTo(new[]
+            {
+                OriginalFiles[0],
+                OriginalFiles[1],
+                OriginalFiles[3],
+                OriginalFiles[4]
+            });
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsEntitiesWithMetadataTypeOfImage_GivenQueryMediaTypesOfImages()
+    {
+        var entities = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            builder => builder.ApplySelection(QueryMediaTypes.Images)
+                .ApplyLimit(100)
+                .ApplyOffset(0)
+                .ApplyOrder("name:asc"));
+
+        entities.Should()
+            .BeEquivalentTo(new[]
+            {
+                OriginalFiles[0],
+                OriginalFiles[1],
+                OriginalFiles[3]
+            });
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsEntitiesWithMetadataTypeOfVideo_GivenQueryMediaTypesOfVideos()
+    {
+        var entities = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            builder => builder.ApplySelection(QueryMediaTypes.Videos)
+                .ApplyLimit(100)
+                .ApplyOffset(0)
+                .ApplyOrder("name:asc"));
+
+        entities.Should()
+            .BeEquivalentTo(new[]
+            {
+                OriginalFiles[4]
+            });
     }
 }

@@ -29,7 +29,7 @@ public sealed class OriginalFilesRepository : BaseRepository, IOriginalFileRepos
         await DbContext.SaveChangesAsync();
     } 
 
-    public Task<List<OriginalFile>> GetManyAsync(AccessAccount owner, Func<IPaginationBuilder<OriginalFile>, IPaginationBuilder<OriginalFile>> configurePagination)
+    public Task<List<OriginalFile>> GetManyAsync(AccessAccount owner, Func<IFilePaginationBuilder<OriginalFile>, IFilePaginationBuilder<OriginalFile>> configurePagination)
     {
         var query = DbContext.OriginalFiles
             .Where(file => file.Owner.Equals(owner));
