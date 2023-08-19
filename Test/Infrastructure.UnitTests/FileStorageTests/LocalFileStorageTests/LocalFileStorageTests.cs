@@ -12,12 +12,11 @@ public abstract class LocalFileStorageTests : IDisposable
         TargetDirectory = $"./TestFiles/{subPath}";
         Directory.CreateDirectory(TargetDirectory);
         
-        var directoryNameProviderMock = new Mock<IOwnerDirectoryNameProvider>();
-        directoryNameProviderMock.Setup(
-                provider => provider.GetFor(It.IsAny<AccessAccount>()))
+        var directoryNameProviderMock = Substitute.For<IOwnerDirectoryNameProvider>();
+        directoryNameProviderMock.GetFor(Arg.Any<AccessAccount>())
             .Returns(String.Empty);
 
-        LocalFileStorage = new(TargetDirectory, directoryNameProviderMock.Object);
+        LocalFileStorage = new(TargetDirectory, directoryNameProviderMock);
         
         ExistingFiles.ForEach(path =>
         {
