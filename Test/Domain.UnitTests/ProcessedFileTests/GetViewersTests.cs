@@ -8,7 +8,7 @@ public class GetViewersTests
         ProcessedFile tested = new(
             AccessAccount.Create("test@email.test"),
             new("Test/path", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "store/path"),
+            new(FileStorageTypes.LocalStorage, "store/path"),
             new("http://url"),
             new[]
             {

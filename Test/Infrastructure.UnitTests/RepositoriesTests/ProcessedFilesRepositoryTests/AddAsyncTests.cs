@@ -13,7 +13,7 @@ public class AddAsyncTests : BaseRepositoryTests
         ProcessedFile newEntity = new(
             AccessAccounts[3],
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             new("new_url"),
             new List<AccessAccount>
             {
@@ -36,7 +36,7 @@ public class AddAsyncTests : BaseRepositoryTests
         ProcessedFile newEntity = new(
             AccessAccounts[3],
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             new("new_url"),
             new List<AccessAccount>
             {
@@ -58,7 +58,7 @@ public class AddAsyncTests : BaseRepositoryTests
         ProcessedFile newEntity = new(
             "new.owner@access.account",
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             new("new_url"),
             new List<AccessAccount>
             {
@@ -80,7 +80,7 @@ public class AddAsyncTests : BaseRepositoryTests
         ProcessedFile newEntity = new(
             AccessAccounts[3],
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             new("new_url"),
             new List<AccessAccount>
             {

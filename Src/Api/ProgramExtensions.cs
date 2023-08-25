@@ -1,9 +1,15 @@
+using System.Reflection;
+using Application.Requests;
+using Application.Responses;
+using Application.Services.MqttServices;
 using Domain.AggregateModels;
 using Domain.AggregateModels.OriginalFileAggregate;
 using Domain.AggregateModels.ProcessedFileAggregate;
 using Infrastructure.Database;
 using Infrastructure.FileStorage;
 using Infrastructure.FileStorage.OwnerDirectoryNameProviders;
+using Infrastructure.Repositories;
+using MediatR.Extensions.AttributedBehaviors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api;
@@ -49,5 +55,25 @@ public static class ProgramExtensions
         
         builder.Services.AddSingleton<IFileStorage<OriginalFile>>(_ => originalFileStorage);
         builder.Services.AddSingleton<IFileStorage<ProcessedFile>>(_ => processedFileStorage);
+    }
+
+    public static void ConfigureRepositories(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IFileRepository<OriginalFile>, OriginalFilesRepository>();
+        builder.Services.AddTransient<IFileRepository<ProcessedFile>, ProcessedFilesRepository>();
+        builder.Services.AddTransient<IProcessedFileRepository, ProcessedFilesRepository>();
+    }
+
+    public static void ConfigureMqtt(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IMqttService, RabbitMqService>();
+    }
+    
+    public static void ConfigureMediatR(this WebApplicationBuilder builder)
+    {
+        var assembly = typeof(SuccessfulResponses<>).Assembly;
+        // var assembly = Assembly.GetExecutingAssembly();
+        builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(assembly));
+        builder.Services.AddMediatRAttributedBehaviors(assembly);
     }
 }

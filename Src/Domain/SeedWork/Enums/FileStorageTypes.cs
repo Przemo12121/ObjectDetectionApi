@@ -1,6 +1,6 @@
 namespace Domain.SeedWork.Enums;
 
-public enum FileStorages
+public enum FileStorageTypes
 {
     LocalStorage
 }

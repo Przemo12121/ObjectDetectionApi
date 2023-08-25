@@ -24,7 +24,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
     {
         OriginalFile nonExisting = new(
             new("non existing file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "dummy"),
+            new(FileStorageTypes.LocalStorage, "dummy"),
             AccessAccounts[1]);
 
         Func<Task> action = async () => await Repository.RemoveAsync(nonExisting);

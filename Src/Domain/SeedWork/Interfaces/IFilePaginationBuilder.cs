@@ -9,6 +9,5 @@ public interface IFilePaginationBuilder<T>
     IFilePaginationBuilder<T> ApplyLimit(int limit);
     IFilePaginationBuilder<T> ApplyOffset(int offset);
     IFilePaginationBuilder<T> ApplyOrder(string order);
-    IFilePaginationBuilder<T> ApplySelection(QueryMediaTypes type);
     IQueryable<T> Build();
 }

@@ -8,7 +8,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.ConfigureDatabase();
+builder.ConfigureRepositories();
 builder.ConfigureFileStorages();
+builder.ConfigureMediatR();
+builder.ConfigureMqtt();
 
 var app = builder.Build();
 

@@ -12,7 +12,6 @@ public sealed class FilePaginationBuilder<T> : IFilePaginationBuilder<T>
     private IQueryable<T> Query { get; set; }
     private int Limit { get; set; }
     private int Offset { get; set; }
-    private QueryMediaTypes Selection { get; set; }
     private string Order { get; set; } = String.Empty;
 
     public FilePaginationBuilder(IQueryable<T> query)
@@ -36,21 +35,8 @@ public sealed class FilePaginationBuilder<T> : IFilePaginationBuilder<T>
         return this;
     }
 
-    public IFilePaginationBuilder<T> ApplySelection(QueryMediaTypes type)
-    {
-        Selection = type;
-        return this;
-    }
-
     public IQueryable<T> Build()
     {
-        Query = Selection switch
-        {
-            QueryMediaTypes.Images => Query.Where(file => file.Metadata.Type.Equals(MediaTypes.Image)),
-            QueryMediaTypes.Videos => Query.Where(file => file.Metadata.Type.Equals(MediaTypes.Video)),
-            _ => Query
-        };
-            
         switch (Order.Split(","))
         {
             case []:
@@ -63,7 +49,6 @@ public sealed class FilePaginationBuilder<T> : IFilePaginationBuilder<T>
                 break;
             default:
                 throw new UnreachableException($"Unexpected order string: {Order}");
-
         }
 
         return Query

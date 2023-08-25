@@ -1,5 +1,8 @@
+using Application.Requests;
+using Application.Requests.Payloads;
 using Domain.AggregateModels;
 using Domain.AggregateModels.OriginalFileAggregate;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -8,19 +11,24 @@ namespace Api.Controllers;
 public class OriginalFilesController : Controller
 {
     private readonly IFileStorage<OriginalFile> _fileStorage;
+    private readonly IMediator _mediator;
 
-    public OriginalFilesController(IFileStorage<OriginalFile> fileStorage)
-        => _fileStorage = fileStorage;
+    public OriginalFilesController(IFileStorage<OriginalFile> fileStorage, IMediator mediator)
+        => (_fileStorage, _mediator) = (fileStorage, mediator);
 
     [HttpPost, Route("")]
     public async Task<IActionResult> Upload([FromForm] IFormFile? file)
     {
+        var response = await _mediator.Send(new DownloadProcessedFileQuery(
+            Guid.NewGuid(),
+            "test@owner.dev"));
+
+        return Ok(response);
         if (file is null)
         {
             return BadRequest();
         }
-        
-        var x = await _fileStorage.SaveAsync(file.OpenReadStream(), "aaa@bbb.ccc");
+
         return Ok();
     }
     

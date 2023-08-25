@@ -11,7 +11,7 @@ public class ProcessedFileTest
         => new(
             AccessAccount.Create("test@email.test"),
             new("filename", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "store/path"),
+            new(FileStorageTypes.LocalStorage, "store/path"),
             new("http://url"),
             new AccessAccount[]
             {

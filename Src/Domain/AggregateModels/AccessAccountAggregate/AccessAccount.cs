@@ -23,6 +23,7 @@ public sealed class AccessAccount : IAccessAccount
             ? new AccessAccount(email.Trim().ToLower()) 
             : throw new ArgumentException("Given string does not match valid email format.");
 
-    public static implicit operator AccessAccount(string str) => Create(str);
+    public static implicit operator AccessAccount(string str) => 
+        Create(str);
     public override string ToString() => Id;
 }

@@ -25,7 +25,7 @@ public class DeleteAsyncTests : BaseRepositoryTests
         ProcessedFile nonExisting = new(
             AccessAccounts[1],
             new("non existing file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "dummy"),
+            new(FileStorageTypes.LocalStorage, "dummy"),
             new("dummy"),
             new List<AccessAccount>() { AccessAccounts[0], AccessAccounts[4] });
 

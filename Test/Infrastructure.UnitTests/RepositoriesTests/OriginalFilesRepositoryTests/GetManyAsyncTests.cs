@@ -10,10 +10,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEmptyList_GivenNonExistingOwner()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             "non@existing.owner", 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(3)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(3)
                 .ApplyOffset(2)
                 .ApplyOrder("name:asc"));
 
@@ -24,10 +24,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsCorrectEntities_GivenExistingOwner()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -47,10 +47,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [InlineData(4)]
     private async void GetManyAsync_ReturnsUpToGivenLimit_GivenLimitUnderMaximum(int limit)
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(limit)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(limit)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -60,10 +60,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_SkipsRecordsUpToOffset_GivenOffsetUnderMaximum()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(2)
                 .ApplyOrder("name:asc"));
 
@@ -78,10 +78,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsUpMaximumEntities_GivenLimitOverMaximum()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -98,10 +98,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesSortedByNameAscending_GivenOrderOfNameAsc()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -112,10 +112,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesSortedByNameDescending_GivenOrderOfNameDesc()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:desc"));
 
@@ -126,10 +126,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesSortedByCreationDateTimeAscending_GivenOrderOfDateAsc()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("date:asc"));
 
@@ -140,10 +140,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesSortedByCreationDateTimeDescending_GivenOrderOfDateDesc()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("date:desc"));
 
@@ -154,10 +154,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesWithAnyMetadataType_GivenQueryMediaTypesOfAll()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.All)
-                .ApplyLimit(100)
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -174,10 +174,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesWithMetadataTypeOfImage_GivenQueryMediaTypesOfImages()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.Images)
-                .ApplyLimit(100)
+            QueryMediaTypes.Images,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -193,10 +193,10 @@ public class GetManyAsyncTests : BaseRepositoryTests
     [Fact]
     private async void GetManyAsync_ReturnsEntitiesWithMetadataTypeOfVideo_GivenQueryMediaTypesOfVideos()
     {
-        var entities = await Repository.GetManyAsync(
+        var (_, entities) = await Repository.GetManyAsync(
             AccessAccounts[1], 
-            builder => builder.ApplySelection(QueryMediaTypes.Videos)
-                .ApplyLimit(100)
+            QueryMediaTypes.Videos,
+            builder => builder.ApplyLimit(100)
                 .ApplyOffset(0)
                 .ApplyOrder("name:asc"));
 
@@ -205,5 +205,50 @@ public class GetManyAsyncTests : BaseRepositoryTests
             {
                 OriginalFiles[4]
             });
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsCountOfAllOwnerVideos_GivenQueryMediaTypesOfVideos()
+    {
+        var (totalCount, _) = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            QueryMediaTypes.Videos,
+            builder => builder.ApplyLimit(1)
+                .ApplyOffset(100)
+                .ApplyOrder("name:asc"));
+
+        totalCount.Should()
+            .Be(OriginalFiles.Count(
+                file => file.Owner.Equals(AccessAccounts[1]) && file.Metadata.Type.Equals(MediaTypes.Video)));
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsCountOfAllOwnerImages_GivenQueryMediaTypesOfImage()
+    {
+        var (totalCount, _) = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            QueryMediaTypes.Images,
+            builder => builder.ApplyLimit(1)
+                .ApplyOffset(100)
+                .ApplyOrder("name:asc"));
+
+        totalCount.Should()
+            .Be(OriginalFiles.Count(
+                file => file.Owner.Equals(AccessAccounts[1]) && file.Metadata.Type.Equals(MediaTypes.Image)));
+    }
+    
+    [Fact]
+    private async void GetManyAsync_ReturnsCountOfAllOwnerFiles_GivenQueryMediaTypesOfAll()
+    {
+        var (totalCount, _) = await Repository.GetManyAsync(
+            AccessAccounts[1], 
+            QueryMediaTypes.All,
+            builder => builder.ApplyLimit(1)
+                .ApplyOffset(100)
+                .ApplyOrder("name:asc"));
+
+        totalCount.Should()
+            .Be(OriginalFiles.Count(
+                file => file.Owner.Equals(AccessAccounts[1])));
     }
 }

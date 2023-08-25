@@ -1,5 +1,6 @@
 using Domain.AggregateModels;
 using Domain.AggregateModels.AccessAccountAggregate;
+using Domain.SeedWork.Enums;
 using Domain.SeedWork.Interfaces;
 using Infrastructure.FileStorage.OwnerDirectoryNameProviders;
 
@@ -11,6 +12,8 @@ public sealed class LocalFileStorage<T> : IFileStorage<T>, IStorage
     private readonly string _directoryGlobalPath;
     private readonly IOwnerDirectoryNameProvider _ownerDirectoryNameNameProvider;
 
+    public FileStorageTypes StorageType { get; } = FileStorageTypes.LocalStorage;
+    
     public LocalFileStorage(string directoryGlobalPath, IOwnerDirectoryNameProvider ownerDirectoryNameProvider)
         => (_directoryGlobalPath, _ownerDirectoryNameNameProvider) = (directoryGlobalPath, ownerDirectoryNameProvider);
 

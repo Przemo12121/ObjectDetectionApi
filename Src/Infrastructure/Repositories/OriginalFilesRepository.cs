@@ -1,5 +1,6 @@
 using Domain.AggregateModels.AccessAccountAggregate;
 using Domain.AggregateModels.OriginalFileAggregate;
+using Domain.SeedWork.Enums;
 using Domain.SeedWork.Interfaces;
 using Infrastructure.Builders;
 using Infrastructure.Database;
@@ -28,17 +29,25 @@ public sealed class OriginalFilesRepository : BaseRepository, IOriginalFileRepos
         DbContext.OriginalFiles.Remove(entity);
         await DbContext.SaveChangesAsync();
     } 
-
-    public Task<List<OriginalFile>> GetManyAsync(AccessAccount owner, Func<IFilePaginationBuilder<OriginalFile>, IFilePaginationBuilder<OriginalFile>> configurePagination)
+    
+    public async Task<(int totalCount, List<OriginalFile> files)> GetManyAsync(AccessAccount owner, QueryMediaTypes mediaTypes, Func<IFilePaginationBuilder<OriginalFile>, IFilePaginationBuilder<OriginalFile>> configurePagination)
     {
         var query = DbContext.OriginalFiles
             .Where(file => file.Owner.Equals(owner));
+            
+        query = mediaTypes switch
+        {
+            QueryMediaTypes.Images => query.Where(file => file.Metadata.Type.Equals(MediaTypes.Image)),
+            QueryMediaTypes.Videos => query.Where(file => file.Metadata.Type.Equals(MediaTypes.Video)),
+            _ => query
+        };
 
-        query = configurePagination(
-                new FilePaginationBuilder<OriginalFile>(query))
-            .Build();
+        var totalCount = await query.CountAsync();
+        var files = await configurePagination(new FilePaginationBuilder<OriginalFile>(query))
+            .Build()
+            .ToListAsync();
         
-        return query.ToListAsync();
+        return (totalCount, files);
     }
 
     public Task<OriginalFile?> GetAsync(Guid id)

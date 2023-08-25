@@ -36,23 +36,23 @@ public abstract class BaseRepositoryTests
         {
             new(
                 new("a_first_original_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri"),
+                new(FileStorageTypes.LocalStorage, "sample_uri"),
                 AccessAccounts[1]),
             new(
                 new("b_second_original_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri_2"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_2"),
                 AccessAccounts[1]),
             new(
                 new("x_third_original_file", MediaTypes.Video),
-                new(FileStorages.LocalStorage, "sample_uri_3"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_3"),
                 AccessAccounts[2]),
             new(
                 new("c_fourth_original_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri_4"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_4"),
                 AccessAccounts[1]),
             new(
                 new("c_fourth_original_file", MediaTypes.Video),
-                new(FileStorages.LocalStorage, "sample_uri_5"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_5"),
                 AccessAccounts[1])
         };
 
@@ -69,13 +69,13 @@ public abstract class BaseRepositoryTests
             new(
                 AccessAccounts[1],
                 new("a_first_processed_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri"),
+                new(FileStorageTypes.LocalStorage, "sample_uri"),
                 new("sample_url"),
                 new List<AccessAccount>()),
             new(
                 AccessAccounts[3],
                 new("b_second_processed_file", MediaTypes.Video),
-                new(FileStorages.LocalStorage, "sample_uri_2"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_2"),
                 new("sample_url_2"),
                 new List<AccessAccount>
                 {
@@ -88,7 +88,7 @@ public abstract class BaseRepositoryTests
             new(
                 AccessAccounts[3],
                 new("c_third_processed_file", MediaTypes.Video),
-                new(FileStorages.LocalStorage, "sample_uri_3"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_3"),
                 new("sample_url_3"),
                 new List<AccessAccount>
                 {
@@ -99,7 +99,7 @@ public abstract class BaseRepositoryTests
             new(
                 AccessAccounts[3],
                 new("z_fourth_processed_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri_4"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_4"),
                 new("sample_url_4"),
                 new List<AccessAccount>
                 {
@@ -110,7 +110,7 @@ public abstract class BaseRepositoryTests
             new(
                 AccessAccounts[3],
                 new("z_fourth_processed_file", MediaTypes.Image),
-                new(FileStorages.LocalStorage, "sample_uri_5"),
+                new(FileStorageTypes.LocalStorage, "sample_uri_5"),
                 new("sample_url_5"),
                 new List<AccessAccount>
                 {

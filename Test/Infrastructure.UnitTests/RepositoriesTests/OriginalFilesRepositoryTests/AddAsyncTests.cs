@@ -12,7 +12,7 @@ public class AddAsyncTests : BaseRepositoryTests
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             AccessAccounts[3]);
 
         await Repository.AddAsync(newEntity);
@@ -27,7 +27,7 @@ public class AddAsyncTests : BaseRepositoryTests
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             AccessAccounts[3]);
 
         await Repository.AddAsync(newEntity);
@@ -42,7 +42,7 @@ public class AddAsyncTests : BaseRepositoryTests
     {
         OriginalFile newEntity = new(
             new("new_file", MediaTypes.Image),
-            new(FileStorages.LocalStorage, "new_file_uri"),
+            new(FileStorageTypes.LocalStorage, "new_file_uri"),
             "new@access.account");
 
         await Repository.AddAsync(newEntity);
