@@ -1,10 +1,13 @@
 using System.Reflection;
 using Application.Requests;
+using Application.Requests.Payloads;
 using Application.Responses;
 using Application.Services.MqttServices;
+using Application.Validators;
 using Domain.AggregateModels;
 using Domain.AggregateModels.OriginalFileAggregate;
 using Domain.AggregateModels.ProcessedFileAggregate;
+using FluentValidation;
 using Infrastructure.Database;
 using Infrastructure.FileStorage;
 using Infrastructure.FileStorage.OwnerDirectoryNameProviders;
@@ -71,9 +74,15 @@ public static class ProgramExtensions
     
     public static void ConfigureMediatR(this WebApplicationBuilder builder)
     {
-        var assembly = typeof(SuccessfulResponses<>).Assembly;
-        // var assembly = Assembly.GetExecutingAssembly();
+        var assembly = typeof(SuccessfulResponse<>).Assembly;
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(assembly));
         builder.Services.AddMediatRAttributedBehaviors(assembly);
+    }
+
+    public static void ConfigureValidators(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IValidator<FilePaginationPayload>, FilePaginationPayloadValidator>();
+        builder.Services.AddSingleton<IValidator<FileStreamPayload>, FileStreamPayloadValidator>();
+        builder.Services.AddSingleton<IValidator<UpdateProcessedFilePayload>, UpdateProcessedFilePayloadValidator>();
     }
 }

@@ -18,12 +18,11 @@ namespace Application.Requests;
 public class DeleteOriginalFileCommand : IRequest<IApplicationResponse>, IModifyCommand<OriginalFile>
 {
     public Guid ResourceId { get; } 
-    public AccessAccount Owner { get; }
     public AccessAccount Requester { get; }
 
     public OriginalFile? Resource { get; set; }
     
-    public DeleteOriginalFileCommand(Guid fileId, AccessAccount owner, AccessAccount requester)
-        => (ResourceId, Owner, Requester) = (fileId, owner, requester);
+    public DeleteOriginalFileCommand(Guid fileId, AccessAccount requester)
+        => (ResourceId, Requester) = (fileId, requester);
 
 }

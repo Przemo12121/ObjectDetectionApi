@@ -1,6 +1,7 @@
 using Application.Requests;
 using Application.Requests.Payloads;
-using Domain.AggregateModels;
+using Application.Responses;
+using Application.Responses.Payloads;
 using Domain.AggregateModels.OriginalFileAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -8,47 +9,43 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [Route("files/original")]
-public class OriginalFilesController : Controller
+public class OriginalFilesController : BaseController
 {
-    private readonly IFileStorage<OriginalFile> _fileStorage;
     private readonly IMediator _mediator;
 
-    public OriginalFilesController(IFileStorage<OriginalFile> fileStorage, IMediator mediator)
-        => (_fileStorage, _mediator) = (fileStorage, mediator);
+    public OriginalFilesController(IMediator mediator)
+        =>  _mediator = mediator;
 
     [HttpPost, Route("")]
-    public async Task<IActionResult> Upload([FromForm] IFormFile? file)
+    public async Task<IActionResult> Upload<T>([FromForm] IFormFile? file)
     {
-        var response = await _mediator.Send(new DownloadProcessedFileQuery(
-            Guid.NewGuid(),
-            "test@owner.dev"));
+        FileStreamPayload payload = file is not null
+            ? new(file.OpenReadStream(), file.FileName)
+            : new(new MemoryStream(), String.Empty);
+        UploadFileCommand request = new(payload, GetRequester());
+        
+        var response = await _mediator.Send(request);
 
-        return Ok(response);
-        if (file is null)
-        {
-            return BadRequest();
-        }
-
-        return Ok();
+        return MapResponse(response);
     }
     
     [HttpGet, Route("")]
-    public IActionResult Download()
+    public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
-        FilePath path = "616161406262622E636363/0922a091c9794300901fb9c20be74ae8";        
-        var x = _fileStorage.Read(path);
-        
-        return x is null
-            ? NotFound() 
-            : Ok(x);
+        GetOriginalFileListQuery request = new(payload, GetRequester());
+
+        var response = await _mediator.Send(request);
+
+        return MapResponse(response);
     }
     
-    [HttpDelete, Route("")]
-    public IActionResult Delete()
+    [HttpDelete, Route("${id:guid}")]
+    public async Task<IActionResult> Delete<T>([FromRoute] Guid id)
     {
-        FilePath path = "616161406262622E636363/6b1f06fe1dba4b928b86c6f9452d2dae";        
-        _fileStorage.Delete(path);
+        DeleteOriginalFileCommand request = new(id, GetRequester());
+
+        var response = await _mediator.Send(request);
         
-        return Ok();
+        return MapResponse(response);
     }
 }

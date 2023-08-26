@@ -21,10 +21,9 @@ public class UpdateProcessedFileCommand : IRequest<IApplicationResponse>, IModif
 {
     public UpdateProcessedFilePayload Payload { get; }
     public Guid ResourceId { get; }
-    public AccessAccount Owner { get; }
     public ProcessedFile? Resource { get; set; }
     public AccessAccount Requester { get; }
 
-    public UpdateProcessedFileCommand(Guid fileId, AccessAccount owner, UpdateProcessedFilePayload payload, AccessAccount requester)
-        => (ResourceId, Owner, Payload, Requester) = (fileId, owner, payload, requester);
+    public UpdateProcessedFileCommand(Guid fileId, UpdateProcessedFilePayload payload, AccessAccount requester)
+        => (ResourceId, Payload, Requester) = (fileId, payload, requester);
 }

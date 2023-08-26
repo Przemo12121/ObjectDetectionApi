@@ -4,17 +4,17 @@ using Domain.SeedWork.Interfaces;
 
 namespace Application.Responses;
 
-public abstract record SuccessfulResponses<T>(T Payload) : IApplicationResponse
+public abstract record SuccessfulResponse<T>(T Payload) : IApplicationResponse
 {
     public bool Success { get; } = true;
 }
 
 public sealed record DownloadFileResponse(FileStream Payload) 
-    : SuccessfulResponses<FileStream>(Payload);
+    : SuccessfulResponse<FileStream>(Payload);
 
 public sealed record FileListResponse<T>(FilePaginationPayload<T> Payload) 
-    : SuccessfulResponses<FilePaginationPayload<T>>(Payload)
+    : SuccessfulResponse<FilePaginationPayload<T>>(Payload)
     where T : UniqueEntity, IFile;
     
 public sealed record OperationSuccessfulResponse(MessagePayload Payload)
-    : SuccessfulResponses<MessagePayload>(Payload);
+    : SuccessfulResponse<MessagePayload>(Payload);

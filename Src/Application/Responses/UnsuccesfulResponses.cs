@@ -12,7 +12,7 @@ public sealed record FileNotFoundResponse(Guid Id, Type Type)
     : UnsuccessfulResponse<MessagePayload>(
         new MessagePayload(ResponseMessages.Errors.FileNotFound(Id, Type)));
 
-public sealed record ActionForbidden(Guid Id, Type Type)
+public sealed record ActionForbiddenResponse(Guid Id, Type Type)
     : UnsuccessfulResponse<MessagePayload>(
         new MessagePayload(ResponseMessages.Errors.ActionForbidden(Id, Type)));
     

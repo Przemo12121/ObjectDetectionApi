@@ -11,13 +11,7 @@ public class OwnerAccessVerificationPipelineBehavior<TRequest, TFile> : IPipelin
     where TFile : class, IIdentifiable<Guid>, IOwnable<AccessAccount>
 {
     public async Task<IApplicationResponse> Handle(TRequest request, RequestHandlerDelegate<IApplicationResponse> next, CancellationToken cancellationToken)
-    {
-        if (request.Resource!.Owner.Equals(request.Requester))
-        {
-            return await next();
-        }
-
-        return new ActionForbidden(request.Resource!.Id, typeof(TFile));
-    }
-    
+        => request.Resource!.Owner.Equals(request.Requester)
+            ? await next()
+            : new ActionForbiddenResponse(request.Resource!.Id, typeof(TFile));
 }

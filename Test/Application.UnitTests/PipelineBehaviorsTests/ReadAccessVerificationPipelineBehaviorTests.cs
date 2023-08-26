@@ -58,6 +58,6 @@ public class ReadAccessVerificationPipelineBehaviorTests : PipelineBehaviorsTest
         var result = await sut.Handle(request, DummyDelegate, CancellationToken.None);
 
         result.Should()
-            .BeEquivalentTo(new ActionForbidden(DummyFile.Id, DummyFile.GetType()));
+            .BeEquivalentTo(new ActionForbiddenResponse(DummyFile.Id, DummyFile.GetType()));
     }
 }
