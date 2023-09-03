@@ -25,6 +25,4 @@ public abstract class BaseRepository : IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
-    public Task SaveAsync() => DbContext.SaveChangesAsync();
 }

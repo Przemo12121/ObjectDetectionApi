@@ -16,12 +16,10 @@ Currently the system uses pretrained Tensorflow object detection model. For dete
 
 ## What is yet to be done
 - Web API
-  - endpoints for managing files
   - OAuth2 (ex. Msc, Facebook, Google)
   - HTML exported documentation, endpoint for getting docs
 - Microservices
-    - RabbitMQ
-    - R-CNN
+    - R-CNN service
     - Cleanup service
     - Notification service (emails)
 - Docker containerization

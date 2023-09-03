@@ -1,26 +1,26 @@
 using Application.Constants;
 using Application.Requests;
 using Application.Responses;
-using Application.Services.MqttServices;
 using Domain.AggregateModels;
 using Domain.AggregateModels.ProcessedFileAggregate;
+using Domain.SeedWork.Services.Amqp;
 using MediatR;
 
 namespace Application.Handlers;
 
 public class DeleteProcessedFileCommandHandler : IRequestHandler<DeleteProcessedFileCommand, IApplicationResponse>
 {
-    private readonly IMqttService _mqttService;
+    private readonly IAmqpService _amqpService;
     private readonly IFileRepository<ProcessedFile> _fileRepository;
 
-    public DeleteProcessedFileCommandHandler(IMqttService mqttService, IFileRepository<ProcessedFile> fileRepository)
-        => (_mqttService, _fileRepository) = (mqttService, fileRepository);
+    public DeleteProcessedFileCommandHandler(IAmqpService amqpService, IFileRepository<ProcessedFile> fileRepository)
+        => (_amqpService, _fileRepository) = (amqpService, fileRepository);
 
 
     public async Task<IApplicationResponse> Handle(DeleteProcessedFileCommand request, CancellationToken cancellationToken)
     {
         await _fileRepository.RemoveAsync(request.Resource!);
-        _mqttService.Enqueue(request.Resource!);
+        _amqpService.Enqueue(new DeleteProcessedFileMessage(request.Resource!));
         return CreateSuccessResponse(request.Resource!);
     }
     

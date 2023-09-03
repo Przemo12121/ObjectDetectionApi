@@ -2,8 +2,8 @@ using Domain.AggregateModels.AccessAccountAggregate;
 using Domain.AggregateModels.OriginalFileAggregate;
 using Domain.SeedWork.Enums;
 using Domain.SeedWork.Interfaces;
-using Infrastructure.Builders;
 using Infrastructure.Database;
+using Infrastructure.Repositories.Builders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;

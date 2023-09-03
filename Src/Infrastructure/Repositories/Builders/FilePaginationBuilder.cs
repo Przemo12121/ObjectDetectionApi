@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Domain.AggregateModels;
-using Domain.SeedWork.Enums;
 using Domain.SeedWork.Interfaces;
 
-namespace Infrastructure.Builders;
+namespace Infrastructure.Repositories.Builders;
 
 public sealed class FilePaginationBuilder<T> : IFilePaginationBuilder<T>
     where T : UniqueEntity, IFile

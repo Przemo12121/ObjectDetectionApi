@@ -1,8 +1,5 @@
-using System.Reflection;
-using Application.Requests;
 using Application.Requests.Payloads;
 using Application.Responses;
-using Application.Services.MqttServices;
 using Application.Validators;
 using Domain.AggregateModels;
 using Domain.AggregateModels.OriginalFileAggregate;
@@ -69,7 +66,7 @@ public static class ProgramExtensions
 
     public static void ConfigureMqtt(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IMqttService, RabbitMqService>();
+        // builder.Services.AddSingleton<IAmqpService, RabbitMqService>();
     }
     
     public static void ConfigureMediatR(this WebApplicationBuilder builder)

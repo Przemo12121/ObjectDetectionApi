@@ -8,8 +8,8 @@ public sealed class OriginalFile : UniqueEntity, IOriginalFile
     public StorageData StorageData { get; }
     public AccessAccount Owner { get; }
 
-    public OriginalFile(Metadata metadata, StorageData storageDate, AccessAccount owner)
-        => (Metadata, StorageData, Owner) = (metadata, storageDate, owner);
+    public OriginalFile(Metadata metadata, StorageData storageData, AccessAccount owner)
+        => (Metadata, StorageData, Owner) = (metadata, storageData, owner);
     
 #pragma warning disable CS8618
     private OriginalFile() { }

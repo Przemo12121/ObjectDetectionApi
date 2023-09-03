@@ -25,5 +25,6 @@ public sealed class AccessAccount : IAccessAccount
 
     public static implicit operator AccessAccount(string str) => 
         Create(str);
+    
     public override string ToString() => Id;
 }
