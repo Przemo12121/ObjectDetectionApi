@@ -14,7 +14,7 @@ public class ProcessedFilesController : BaseController
         =>  _mediator = mediator;
 
     [HttpGet, Route("{id:guid}")]
-    public async Task<IActionResult> Download<T>([FromQuery] Guid id)
+    public async Task<IActionResult> Download([FromQuery] Guid id)
     {
         DownloadProcessedFileQuery request = new(id, GetRequester());
         
@@ -24,7 +24,7 @@ public class ProcessedFilesController : BaseController
     }
     
     [HttpGet, Route("")]
-    public async Task<IActionResult> GetList<T>([FromQuery] FilePaginationPayload payload)
+    public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
         GetProcessedFileListQuery request = new(payload, GetRequester());
         
@@ -34,7 +34,7 @@ public class ProcessedFilesController : BaseController
     }
     
     [HttpDelete, Route("${id:guid}")]
-    public async Task<IActionResult> Delete<T>([FromRoute] Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         DeleteProcessedFileCommand request = new(id, GetRequester());
     
@@ -44,7 +44,7 @@ public class ProcessedFilesController : BaseController
     }
     
     [HttpPatch, Route("${id:guid}")]
-    public async Task<IActionResult> Update<T>([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
     {
         UpdateProcessedFileCommand request = new(id, payload, GetRequester());
 

@@ -4,13 +4,19 @@ using Application.Validators;
 using Domain.AggregateModels;
 using Domain.AggregateModels.OriginalFileAggregate;
 using Domain.AggregateModels.ProcessedFileAggregate;
+using Domain.SeedWork.Services.Amqp;
 using FluentValidation;
+using Infrastructure.Amqp;
 using Infrastructure.Database;
 using Infrastructure.FileStorage;
 using Infrastructure.FileStorage.OwnerDirectoryNameProviders;
 using Infrastructure.Repositories;
 using MediatR.Extensions.AttributedBehaviors;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
 
 namespace Api;
 
@@ -20,7 +26,7 @@ public static class ProgramExtensions
     {
         builder.Services.AddTransient<DbContextOptions<ObjectDetectionDbContext>>(
             _ => new DbContextOptionsBuilder<ObjectDetectionDbContext>()
-                .UseNpgsql(builder.Configuration.GetConnectionString("ObjectDetectionDb"))
+                .UseNpgsql(builder.Configuration.GetConnectionString("ObjectDetectionDb"), b => b.MigrationsAssembly("Api"))
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .Options);
         
@@ -64,9 +70,18 @@ public static class ProgramExtensions
         builder.Services.AddTransient<IProcessedFileRepository, ProcessedFilesRepository>();
     }
 
-    public static void ConfigureMqtt(this WebApplicationBuilder builder)
+    public static void ConfigureAmqp(this WebApplicationBuilder builder)
     {
-        // builder.Services.AddSingleton<IAmqpService, RabbitMqService>();
+        var rabbitMqSection = builder.Configuration.GetSection("Amqp").GetSection("RabbitMQ");
+        
+        builder.Services.AddSingleton<IAmqpService, RabbitMq>(_ => RabbitMq.Connect(
+            new ConnectionFactory
+            {
+                UserName = rabbitMqSection.GetValue<string>("Username"),
+                Password = rabbitMqSection.GetValue<string>("Password"),
+                Port = rabbitMqSection.GetValue<int>("Port"),
+                ClientProvidedName = rabbitMqSection.GetValue<string>("Password")
+            }));
     }
     
     public static void ConfigureMediatR(this WebApplicationBuilder builder)
@@ -81,5 +96,34 @@ public static class ProgramExtensions
         builder.Services.AddSingleton<IValidator<FilePaginationPayload>, FilePaginationPayloadValidator>();
         builder.Services.AddSingleton<IValidator<FileStreamPayload>, FileStreamPayloadValidator>();
         builder.Services.AddSingleton<IValidator<UpdateProcessedFilePayload>, UpdateProcessedFilePayloadValidator>();
+    }
+    
+    public static void ConfigureOAuth(this WebApplicationBuilder builder)
+    {
+        var googleOAuthSection = builder.Configuration.GetSection("Authentication").GetSection("Google");
+
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                options.DefaultSignOutScheme = IdentityConstants.ExternalScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = (ctx) =>
+                {
+                    ctx.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            })
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.Scope.Add("email");
+                // googleOptions.CallbackPath = "/signin-google"; // registered in google console
+                googleOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                googleOptions.ClientId = googleOAuthSection.GetValue<string>("ClientId")!;
+                googleOptions.ClientSecret = googleOAuthSection.GetValue<string>("ClientSecret")!;
+            });
     }
 }

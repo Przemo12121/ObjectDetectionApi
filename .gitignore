@@ -2,6 +2,7 @@
 DockerVolumes/
 .env
 *.sln.DotSettings.*
+Src/Api/appsettings.Development.json
 
 **/obj/**
 **/bin/**

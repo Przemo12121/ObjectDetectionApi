@@ -1,9 +1,7 @@
 using Application.Requests;
 using Application.Requests.Payloads;
-using Application.Responses;
-using Application.Responses.Payloads;
-using Domain.AggregateModels.OriginalFileAggregate;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -29,6 +27,7 @@ public class OriginalFilesController : BaseController
         return MapResponse(response);
     }
     
+    [Authorize]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
