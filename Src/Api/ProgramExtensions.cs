@@ -80,7 +80,7 @@ public static class ProgramExtensions
                 UserName = rabbitMqSection.GetValue<string>("Username"),
                 Password = rabbitMqSection.GetValue<string>("Password"),
                 Port = rabbitMqSection.GetValue<int>("Port"),
-                ClientProvidedName = rabbitMqSection.GetValue<string>("Password")
+                ClientProvidedName = rabbitMqSection.GetValue<string>("ClientProvidedName")
             }));
     }
     
