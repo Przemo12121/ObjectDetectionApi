@@ -1,0 +1,3 @@
+add to dockerfile:
+apt-get update && apt-get install -y ffmpeg
+(or with sudo)
