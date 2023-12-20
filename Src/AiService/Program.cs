@@ -49,12 +49,12 @@
 using var process = new Process();
 process.StartInfo.Arguments = "Python/main.py image test.jpg test_o.jpg";
 process.StartInfo.FileName = "python";
-process.StartInfo.Environment.Add("TF_CPP_MIN_LOG_LEVEL", "3");
+// process.StartInfo.Environment.Add("TF_CPP_MIN_LOG_LEVEL", "3");
 process.StartInfo.UseShellExecute = true;
 // process.StartInfo.RedirectStandardOutput = true;
 // process.OutputDataReceived += (_, _) => {};
 process.Start();
 // process.OutputDataReceived += (_, _) => { }; 
 Console.WriteLine("Process started");
-// await process.WaitForExitAsync(default);
+await process.WaitForExitAsync(default);
 Console.WriteLine("Process ended");
