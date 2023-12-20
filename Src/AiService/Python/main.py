@@ -1,11 +1,8 @@
-import numpy as np
-import cv2 as cv
 import sys
-import tensorflow as tf
 from ModelWrappers.DoModelWrapper import D0ModelWrapper
 from MediaHandlers.ImageHandler import ImageHandler
 from FrameHandlers.ObjectDetector import ObjectDetector
-from Python.MediaHandlers.VideoHandler import VideoHandler
+from MediaHandlers.VideoHandler import VideoHandler
 
 if len(sys.argv) < 4:
     raise Exception("Insufficient number of cli arguments.")
