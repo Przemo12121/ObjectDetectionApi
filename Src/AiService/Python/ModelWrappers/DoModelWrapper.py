@@ -1,9 +1,8 @@
-from tensorflow import saved_model, expand_dims, image
+from tensorflow import saved_model, expand_dims, image, get_logger
 from ModelWrappers.ModelWrapper import ModelWrapper
 from os import path
 from numpy import array
-
-RgbImage = list[list[list[int]]]
+from typeAliases import RgbImage
 
 class D0ModelWrapper(ModelWrapper):
     def __init__(self, pathToModel: str) -> None:

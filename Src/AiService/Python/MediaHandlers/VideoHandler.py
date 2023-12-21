@@ -1,8 +1,6 @@
-from tensorflow import io, keras
-from ModelWrappers.ModelWrapper import ModelWrapper
 from MediaHandlers.MediaHandler import MediaHandler
 from FrameHandlers.FrameHandler import FrameHandler
-from cv2 import VideoCapture, VideoWriter, CAP_PROP_FPS, CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT
+from cv2 import VideoCapture, VideoWriter, VideoWriter_fourcc, CAP_PROP_FPS, CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT
 
 class VideoHandler(MediaHandler):
     def __init__(self, frameHandler: FrameHandler) -> None:
@@ -10,10 +8,10 @@ class VideoHandler(MediaHandler):
 
     def handle(self, inputFilePath: str, outputFilePath: str) -> None:
         inputFile = VideoCapture(inputFilePath)
-        fps = inputFile.get(CAP_PROP_FPS)
-        frameSize = (inputFile.get(CAP_PROP_FRAME_WIDTH), inputFile.get(CAP_PROP_FRAME_HEIGHT))
-
-        outputFile = VideoWriter(outputFilePath, *'mp4v', fps, frameSize, True)
+        fps = int(inputFile.get(CAP_PROP_FPS))
+        frameSize = (int(inputFile.get(CAP_PROP_FRAME_WIDTH)), int(inputFile.get(CAP_PROP_FRAME_HEIGHT)))
+        
+        outputFile = VideoWriter( outputFilePath, VideoWriter_fourcc(*'mp4v'), fps, frameSize)
 
         hasNext, frame = inputFile.read()
         while hasNext:

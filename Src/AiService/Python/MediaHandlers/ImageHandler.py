@@ -1,6 +1,5 @@
 from tensorflow import io, keras
 from numpy import array
-from ModelWrappers.ModelWrapper import ModelWrapper
 from MediaHandlers.MediaHandler import MediaHandler
 from FrameHandlers.FrameHandler import FrameHandler
 from typeAliases import RgbImage

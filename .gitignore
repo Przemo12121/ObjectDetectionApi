@@ -8,6 +8,7 @@ Src/AiService/Python/models/**/*
 **/**/*.jpg
 **/**/*.png
 **/**/__pycache__/*
+**/**/*.mp4
 
 **/obj/**
 **/bin/**

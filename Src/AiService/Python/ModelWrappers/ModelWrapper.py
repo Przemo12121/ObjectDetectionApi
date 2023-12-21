@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod, abstractproperty
-
-RgbImage = list[list[list[int]]]
-ImageSize = tuple[int, int] #(width, height)
+from typeAliases import RgbImage
 
 class ModelWrapper(ABC):
     @abstractproperty
