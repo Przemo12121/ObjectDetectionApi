@@ -3,6 +3,12 @@ DockerVolumes/
 .env
 *.sln.DotSettings.*
 Src/Api/appsettings.Development.json
+Src/AiService/Python/models/**/*
+**/**/.devcontainer/*
+**/**/*.jpg
+**/**/*.png
+**/**/__pycache__/*
+**/**/*.mp4
 
 **/obj/**
 **/bin/**
