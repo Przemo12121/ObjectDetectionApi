@@ -18,6 +18,7 @@ public class PythonAiProcessingHandler : IProcessingHandler
 
     public void BeginProcessing(OriginalFile file)
     {
+        Console.WriteLine($"Process begun for file with id: {file.Id}");
         lock (_filesCancellationTokenSourcesLookUpTable)
         {
             if (_filesCancellationTokenSourcesLookUpTable.ContainsKey(file))
@@ -34,6 +35,8 @@ public class PythonAiProcessingHandler : IProcessingHandler
     
     public void StopProcessing(OriginalFile file)
     {
+        Console.WriteLine($"Process being stopped for file with id: {file.Id}");
+
         lock (_filesCancellationTokenSourcesLookUpTable)
         {
             if (!_filesCancellationTokenSourcesLookUpTable.ContainsKey(file))

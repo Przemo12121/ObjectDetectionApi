@@ -30,3 +30,15 @@ services:
       - RABBITMQ_DEFAULT_PASS=${AMQP_PASSWORD}
     volumes:
       - ./DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
+
+  ai:
+    build: 
+      context: .
+      dockerfile: Dockerfile.aiservice
+      args:
+        - DATABASE_CONNECTION_STRING=Host=${DATABASE_HOST};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
+        - RABBIT_CONNECTION_STRING=Port=${AMQP_PORT};Username=${AMQP_USERNAME_USER};Password=${AMQP_PASSWORD};ProvidedName=AiService
+        - ORIGINAL_FILES_DIRECTORY=${ORIGINAL_FILES_DIRECTORY}
+        - PROCESSED_FILES_DIRECTORY=${PROCESSED_FILES_DIRECTORY}
+    container_name: object_detection_aiservice
+    restart: unless-stopped
