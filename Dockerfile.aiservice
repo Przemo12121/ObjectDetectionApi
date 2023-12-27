@@ -1,21 +1,20 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-WORKDIR /AiService
+WORKDIR /App
 ADD ./Src/AiService ./Src/AiService
 ADD ./Src/Infrastructure ./Src/Infrastructure
 ADD ./Src/Domain ./Src/Domain
 
-WORKDIR /AiService/Src/AiService
+WORKDIR /App/Src/AiService
 RUN dotnet restore
 RUN dotnet publish -c Release -o ../../Out
 
 FROM python:3.10
 RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-RUN sudo dpkg -i packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
-RUN sudo apt-get update
-RUN sudo apt-get install -y dotnet-sdk-7.0
-# FROM mcr.microsoft.com/dotnet/aspnet:7.0
+RUN apt-get update
+RUN apt-get install -y dotnet-sdk-7.0
 
 ARG ORIGINAL_FILES_DIRECTORY
 ENV original_dir=$ORIGINAL_FILES_DIRECTORY
@@ -30,10 +29,10 @@ ARG RABBIT_CONNECTION_STRING
 ENV rabbit_conn=$RABBIT_CONNECTION_STRING
 
 WORKDIR /AiService
-COPY --from=build ./AiService/Out .
+COPY --from=build ./App/Out .
 
 ADD ./Src/AiService/Python ./Python
 RUN pip install -r Python/requirements.txt
-RUN sudo apt-get update && sudo apt-get install -y ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg
 
-ENTRYPOINT dotnet run $original_dir $processed_dir $db_conn $rabbit_conn
+ENTRYPOINT dotnet AiService.dll $original_dir $processed_dir $db_conn $rabbit_conn

@@ -29,12 +29,14 @@ foreach (var arg in args)
 var rabbitUsername = rabbitConnectionString["Username"] ?? throw new ArgumentNullException("Rabbit 'Username' not provided.");
 var rabbitPassword = rabbitConnectionString["Password"] ?? throw new ArgumentNullException("Rabbit 'Password' not provided.");
 var rabbitPort = rabbitConnectionString["Port"] ?? throw new ArgumentNullException("Rabbit 'Port' not provided.");
+var rabbitHost = rabbitConnectionString["Host"] ?? throw new ArgumentNullException("Rabbit 'Host' not provided.");
 var rabbitClientProvidedName = rabbitConnectionString["ProvidedName"] ?? throw new ArgumentNullException("Rabbit 'ProvidedName' not provided.");
 
 IFileStorage<OriginalFile> originalFilesStorage = new LocalFileStorage<OriginalFile>(originalFilesDirectory, new Sha256OwnerDirectoryNameProvider()); 
 IFileStorage<ProcessedFile> processedFilesStorage = new LocalFileStorage<ProcessedFile>(processedFilesDirectory, new Sha256OwnerDirectoryNameProvider()); 
 IAmqpService amqpService = RabbitMq.Connect(new ConnectionFactory
 {
+    HostName = rabbitHost,
     UserName = rabbitUsername,
     Password = rabbitPassword,
     Port = Convert.ToInt32(rabbitPort),
