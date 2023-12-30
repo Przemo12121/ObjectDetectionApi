@@ -46,4 +46,7 @@ public sealed class LocalFileStorage<T> : IFileStorage<T>, IStorage
 
     public void EnsureCreated()
         => Directory.CreateDirectory(_directoryGlobalPath);
+
+    public FilePath GetFullPath(T file)
+        => $"{_directoryGlobalPath}/{file.StorageData.Uri}";
 }

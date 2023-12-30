@@ -11,4 +11,5 @@ public interface IFileStorage<T>
     Task<FilePath> SaveAsync(Stream stream, AccessAccount owner);
     FileStream? Read(FilePath filePath);
     void Delete(FilePath filePath);
+    FilePath GetFullPath(T file);
 }

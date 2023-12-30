@@ -21,19 +21,15 @@ var rabbitConnectionString = args[3]!
     .Select(keyValuePair => keyValuePair.Split("="))
     .ToDictionary(keyValuePair => keyValuePair[0], keyValuePair => keyValuePair[1]);
 
-foreach (var arg in args)
-{
-    Console.WriteLine(arg);
-}
-
 var rabbitUsername = rabbitConnectionString["Username"] ?? throw new ArgumentNullException("Rabbit 'Username' not provided.");
 var rabbitPassword = rabbitConnectionString["Password"] ?? throw new ArgumentNullException("Rabbit 'Password' not provided.");
 var rabbitPort = rabbitConnectionString["Port"] ?? throw new ArgumentNullException("Rabbit 'Port' not provided.");
 var rabbitHost = rabbitConnectionString["Host"] ?? throw new ArgumentNullException("Rabbit 'Host' not provided.");
 var rabbitClientProvidedName = rabbitConnectionString["ProvidedName"] ?? throw new ArgumentNullException("Rabbit 'ProvidedName' not provided.");
 
-IFileStorage<OriginalFile> originalFilesStorage = new LocalFileStorage<OriginalFile>(originalFilesDirectory, new Sha256OwnerDirectoryNameProvider()); 
-IFileStorage<ProcessedFile> processedFilesStorage = new LocalFileStorage<ProcessedFile>(processedFilesDirectory, new Sha256OwnerDirectoryNameProvider()); 
+IFileStorage<OriginalFile> originalFilesStorage = new LocalFileStorage<OriginalFile>(originalFilesDirectory, new Sha256OwnerDirectoryNameProvider());
+IFileStorage<ProcessedFile> processedFilesStorage = new LocalFileStorage<ProcessedFile>(processedFilesDirectory, new Sha256OwnerDirectoryNameProvider());
+
 IAmqpService amqpService = RabbitMq.Connect(new ConnectionFactory
 {
     HostName = rabbitHost,
@@ -55,4 +51,7 @@ amqpService.CreateConsumer<FileUploadedMessage, OriginalFile>(
 Console.CancelKeyPress += (_, _) => Console.WriteLine("Ai service shutting down.");
 Console.WriteLine("Ai service running.");
 
-while(true); // run program until shutdown
+while (true) ; // run program until shutdown
+
+// add permisions to all users to dockervolumes
+// dotnet run /home/przemo/Repositories/Przemo12121/ObjectDetectionApi/DockerVolumes/LocalStorage/Files/Original /home/przemo/Repositories/Przemo12121/ObjectDetectionApi/DockerVolumes/LocalStorage/Files/Processed "aaa" "Username=object_detection_amqp;Password=GLkWl3v0fl3y2CW7cX7Z;Port=5672;Host=localhost;ProvidedName=aiservice"
