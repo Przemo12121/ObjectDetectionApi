@@ -1,3 +1,4 @@
+.config/
 .idea/
 DockerVolumes/
 .env
@@ -13,3 +14,5 @@ Src/AiService/Python/models/**/*
 **/obj/**
 **/bin/**
 FILES/*
+
+.fake
