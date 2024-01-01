@@ -48,10 +48,7 @@ amqpService.CreateConsumer<FileUploadedMessage, OriginalFile>(
     "OnFileUploaded_AiService", 
     message => handler.BeginProcessing(message.File));
 
-Console.CancelKeyPress += (_, _) => Console.WriteLine("Ai service shutting down.");
+Console.CancelKeyPress += (_, _) => Console.WriteLine("Ai service shutting down.\n");
 Console.WriteLine("Ai service running.");
 
 while (true) ; // run program until shutdown
-
-// add permisions to all users to dockervolumes
-// dotnet run /home/przemo/Repositories/Przemo12121/ObjectDetectionApi/DockerVolumes/LocalStorage/Files/Original /home/przemo/Repositories/Przemo12121/ObjectDetectionApi/DockerVolumes/LocalStorage/Files/Processed "aaa" "Username=object_detection_amqp;Password=GLkWl3v0fl3y2CW7cX7Z;Port=5672;Host=localhost;ProvidedName=aiservice"

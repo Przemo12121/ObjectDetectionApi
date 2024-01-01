@@ -30,6 +30,11 @@ services:
       - RABBITMQ_DEFAULT_PASS=${AMQP_PASSWORD}
     volumes:
       - ./DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   ai:
     build: 
@@ -45,3 +50,25 @@ services:
     volumes:
       - ${ORIGINAL_FILES_DIRECTORY}:/var/lib/localStorage/files/original
       - ${PROCESSED_FILES_DIRECTORY}:/var/lib/localStorage/files/processed
+    depends_on:
+      amqp:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+  
+  cleanup:
+    build: 
+      context: .
+      dockerfile: Dockerfile.cleanupservice
+      args:
+        - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
+        - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
+        - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
+    container_name: object_detection_cleanupservice
+    restart: unless-stopped
+    volumes:
+      - ${ORIGINAL_FILES_DIRECTORY}:/var/lib/localStorage/files/original
+      - ${PROCESSED_FILES_DIRECTORY}:/var/lib/localStorage/files/processed
+    depends_on:
+      amqp:
+        condition: service_healthy
