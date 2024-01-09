@@ -13,7 +13,7 @@ builder.ConfigureFileStorages();
 builder.ConfigureMediatR();
 builder.ConfigureAmqp();
 builder.ConfigureValidators();
-builder.ConfigureOAuth();
+// builder.ConfigureOAuth();
 
 var app = builder.Build();
 

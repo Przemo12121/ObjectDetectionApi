@@ -6,7 +6,10 @@ public sealed record Metadata(string Name, MediaTypes Type);
 
 public sealed record StorageData(FileStorageTypes StorageType, string Uri);
 
-public sealed record ServeData(string Url);
+public sealed record ServeData(string Url)
+{
+    public string Url { get; set; } = null!;
+}
 
 public sealed record FilePath(string Path)
 {

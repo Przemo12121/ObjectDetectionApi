@@ -16,7 +16,6 @@ public class DeleteProcessedFileCommandHandler : IRequestHandler<DeleteProcessed
     public DeleteProcessedFileCommandHandler(IAmqpService amqpService, IFileRepository<ProcessedFile> fileRepository)
         => (_amqpService, _fileRepository) = (amqpService, fileRepository);
 
-
     public async Task<IApplicationResponse> Handle(DeleteProcessedFileCommand request, CancellationToken cancellationToken)
     {
         await _fileRepository.RemoveAsync(request.Resource!);
