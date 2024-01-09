@@ -4,6 +4,10 @@ using Domain.AggregateModels.AccessAccountAggregate;
 using Domain.AggregateModels.OriginalFileAggregate;
 using Domain.AggregateModels.ProcessedFileAggregate;
 using Domain.SeedWork.Enums;
+using Domain.SeedWork.Services.Amqp;
+using Infrastructure.FileServers;
+using Infrastructure.Repositories;
+using Infrastructure.Repositories.Factories;
 
 namespace AiService.ProcessingHandlers.PythonScriptsHandlers;
 
@@ -11,10 +15,24 @@ public class PythonAiProcessingHandler : IProcessingHandler
 {
     private readonly IFileStorage<OriginalFile> _originalFilesStorage;
     private readonly IFileStorage<ProcessedFile> _processedFilesStorage;
+    private readonly IRepositoryFactory<ProcessedFilesRepository, ProcessedFile> _repositoryFactory;
     private readonly Dictionary<OriginalFile, CancellationTokenSource> _filesCancellationTokenSourcesLookUpTable = new();
+    private readonly IAmqpService _amqpService;
+    private readonly IFileServerUrlFactory _urlFactory;
 
-    public PythonAiProcessingHandler(IFileStorage<OriginalFile> originalFileStorage, IFileStorage<ProcessedFile> processedFilesStorage) 
-        => (_originalFilesStorage, _processedFilesStorage) = (originalFileStorage, processedFilesStorage);
+    public PythonAiProcessingHandler(
+        IFileStorage<OriginalFile> originalFileStorage, 
+        IFileStorage<ProcessedFile> processedFilesStorage, 
+        IRepositoryFactory<ProcessedFilesRepository, ProcessedFile> repositoryFactory, 
+        IAmqpService amqpService, 
+        IFileServerUrlFactory urlFactory)
+    {
+        _repositoryFactory = repositoryFactory;
+        _amqpService = amqpService;
+        _urlFactory = urlFactory;
+        _originalFilesStorage = originalFileStorage;
+        _processedFilesStorage = processedFilesStorage;
+    }
 
     public void BeginProcessing(OriginalFile file)
     {
@@ -49,6 +67,8 @@ public class PythonAiProcessingHandler : IProcessingHandler
             _filesCancellationTokenSourcesLookUpTable[file].Cancel();
             _filesCancellationTokenSourcesLookUpTable.Remove(file);
         }
+        
+        _amqpService.Enqueue(new FileProcessingStoppedMessage(file));
     }
 
     private async Task HandleProcessingInBackgroundThread(OriginalFile file, CancellationTokenSource tokenSource)
@@ -58,9 +78,11 @@ public class PythonAiProcessingHandler : IProcessingHandler
         ProcessedFile newFile = new(
             file.Owner,
             file.Metadata,
-            new(file.StorageData.StorageType, newFilePath),
-            new(""), // TODO: serving service -> uri to get method with guid
+            file.StorageData with { Uri = newFilePath},
+            new ServeData(""),
             Array.Empty<AccessAccount>());
+
+        newFile.ServeData.Url = _urlFactory.Create(newFile);
 
         var newFileFullPath = _processedFilesStorage.GetFullPath(newFile);
         var originalFileFullPath = _originalFilesStorage.GetFullPath(file);
@@ -75,12 +97,15 @@ public class PythonAiProcessingHandler : IProcessingHandler
         }
 
         process.Dispose();
-        // insert to db
-
+        
         lock (_filesCancellationTokenSourcesLookUpTable)
         {
             _filesCancellationTokenSourcesLookUpTable.Remove(file);
         }
+        
+        _amqpService.Enqueue(new FileProcessingFinishedMessage(file));
+        await _repositoryFactory.Create()
+            .AddAsync(newFile);
     }
 
     private static Process CreateAndRunProcess(MediaTypes mediaType, string inputFile, string outputFile)

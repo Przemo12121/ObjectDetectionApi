@@ -14,7 +14,6 @@ public class UpdateProcessedFileCommandHandler : IRequestHandler<UpdateProcessed
     public UpdateProcessedFileCommandHandler(IProcessedFileRepository fileRepository)
         => (_fileRepository) = fileRepository;
 
-
     public async Task<IApplicationResponse> Handle(UpdateProcessedFileCommand request, CancellationToken cancellationToken)
     {
         await _fileRepository.UpdateAsync(request.Resource!);

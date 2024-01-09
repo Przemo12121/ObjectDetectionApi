@@ -16,7 +16,6 @@ public class DeleteOriginalFileCommandHandler : IRequestHandler<DeleteOriginalFi
     public DeleteOriginalFileCommandHandler(IAmqpService amqpService, IFileRepository<OriginalFile> fileRepository)
         => (_amqpService, _fileRepository) = (amqpService, fileRepository);
 
-
     public async Task<IApplicationResponse> Handle(DeleteOriginalFileCommand request, CancellationToken cancellationToken)
     {
         await _fileRepository.RemoveAsync(request.Resource!);

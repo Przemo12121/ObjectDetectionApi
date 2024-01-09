@@ -45,6 +45,7 @@ services:
         - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
         - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
         - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
+        - API_URL=${API_HTTPS_URL}
     container_name: object_detection_aiservice
     restart: unless-stopped
     volumes:

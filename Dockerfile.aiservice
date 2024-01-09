@@ -28,6 +28,9 @@ ENV db_conn=$DATABASE_CONNECTION_STRING
 ARG RABBIT_CONNECTION_STRING
 ENV rabbit_conn=$RABBIT_CONNECTION_STRING
 
+ARG API_URL
+ENV api_url=$API_URL
+
 WORKDIR /AiService
 COPY --from=build ./App/Out .
 
@@ -35,4 +38,4 @@ ADD ./Src/AiService/Python ./Python
 RUN pip install -r Python/requirements.txt
 RUN apt-get update && apt-get install -y ffmpeg
 
-ENTRYPOINT dotnet AiService.dll $original_dir $processed_dir $db_conn $rabbit_conn
+ENTRYPOINT dotnet AiService.dll $original_dir $processed_dir $db_conn $api_url $rabbit_conn
