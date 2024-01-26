@@ -40,14 +40,16 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.api
-      args:
-        - DATABASE_CONNECTION_STRING=Host=${DATABASE_HOST};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
-        - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=ApiClient
-        - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
-        - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
-        - API_URL=${API_URL}
+    environment:
+      - ASPNETCORE_ConnectionStrings__ObjectDetectionDb=Host=db;Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
+      - ASPNETCORE_ConnectionStrings__Amqp=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=ApiClient
+      - ASPNETCORE_LocalStorage__OriginalFiles=/var/lib/localStorage/files/original
+      - ASPNETCORE_LocalStorage__ProcessedFiles=/var/lib/localStorage/files/processed
+      - ASPNETCORE_Kestrel__Endpoints__Http__Url=http://0.0.0.0:6010
     container_name: object_detection_api
     restart: unless-stopped
+    ports:
+      - "6010:${API_PORT}"
     volumes:
       - ${ORIGINAL_FILES_DIRECTORY}:/var/lib/localStorage/files/original
       - ${PROCESSED_FILES_DIRECTORY}:/var/lib/localStorage/files/processed
@@ -62,7 +64,7 @@ services:
       context: .
       dockerfile: Dockerfile.aiservice
       args:
-        - DATABASE_CONNECTION_STRING=Host=${DATABASE_HOST};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
+        - DATABASE_CONNECTION_STRING=Host=db;Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
         - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
         - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
         - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed

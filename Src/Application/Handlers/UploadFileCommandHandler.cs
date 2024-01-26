@@ -23,7 +23,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, IAppl
     public async Task<IApplicationResponse> Handle(UploadFileCommand request, CancellationToken cancellationToken)
     {
         var path = await _fileStorage.SaveAsync(request.Payload.Stream, request.Requester);
-
+        
         OriginalFile entity = new(
             CreateMetadata(request.Payload),
             new(_fileStorage.StorageType, path),

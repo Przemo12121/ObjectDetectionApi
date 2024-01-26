@@ -16,7 +16,7 @@ public class OriginalFilesController : BaseController
 
     // [Authorize]
     [HttpPost, Route("")]
-    public async Task<IActionResult> Upload<T>([FromForm] IFormFile? file)
+    public async Task<IActionResult> Upload([FromForm] IFormFile? file)
     {
         FileStreamPayload payload = file is not null
             ? new(file.OpenReadStream(), file.FileName)
@@ -41,7 +41,7 @@ public class OriginalFilesController : BaseController
     
     // [Authorize]
     [HttpDelete, Route("${id:guid}")]
-    public async Task<IActionResult> Delete<T>([FromRoute] Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         DeleteOriginalFileCommand request = new(id, GetRequester());
 

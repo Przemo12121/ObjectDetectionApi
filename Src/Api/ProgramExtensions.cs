@@ -72,15 +72,25 @@ public static class ProgramExtensions
 
     public static void ConfigureAmqp(this WebApplicationBuilder builder)
     {
-        var rabbitMqSection = builder.Configuration.GetSection("Amqp").GetSection("RabbitMQ");
+        var amqpConnectionString = builder.Configuration.GetConnectionString("Amqp");
+
+        if (amqpConnectionString is null)
+        {
+            throw new ArgumentNullException(nameof(amqpConnectionString));
+        }
+
+        var amqp = amqpConnectionString.Split(";")
+            .Select(keyValuePair => keyValuePair.Split("="))
+            .ToDictionary(keyValuePair => keyValuePair[0], keyValuePair => keyValuePair[1]);
         
         builder.Services.AddSingleton<IAmqpService, RabbitMq>(_ => RabbitMq.Connect(
             new ConnectionFactory
             {
-                UserName = rabbitMqSection.GetValue<string>("Username"),
-                Password = rabbitMqSection.GetValue<string>("Password"),
-                Port = rabbitMqSection.GetValue<int>("Port"),
-                ClientProvidedName = rabbitMqSection.GetValue<string>("ClientProvidedName   ")
+                UserName = amqp["Username"],
+                Password = amqp["Password"],
+                HostName = amqp["Host"],
+                Port = Convert.ToInt32(amqp["Port"]),
+                ClientProvidedName = amqp["ProvidedName"]
             }));
     }
     

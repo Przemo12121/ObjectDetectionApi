@@ -36,7 +36,7 @@ public class ProcessedFilesController : BaseController
     }
     
     // [Authorize]
-    [HttpDelete, Route("${id:guid}")]
+    [HttpDelete, Route("{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         DeleteProcessedFileCommand request = new(id, GetRequester());
