@@ -36,8 +36,29 @@ services:
       timeout: 10s
       retries: 3
 
-  ai:
+  api:
     build: 
+      context: .
+      dockerfile: Dockerfile.api
+      args:
+        - DATABASE_CONNECTION_STRING=Host=${DATABASE_HOST};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD};Database=${DATABASE_NAME}
+        - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=ApiClient
+        - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
+        - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
+        - API_URL=${API_URL}
+    container_name: object_detection_api
+    restart: unless-stopped
+    volumes:
+      - ${ORIGINAL_FILES_DIRECTORY}:/var/lib/localStorage/files/original
+      - ${PROCESSED_FILES_DIRECTORY}:/var/lib/localStorage/files/processed
+    depends_on:
+      amqp:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+        
+  ai:
+    build:
       context: .
       dockerfile: Dockerfile.aiservice
       args:
@@ -45,7 +66,7 @@ services:
         - RABBIT_CONNECTION_STRING=Host=amqp;Port=${AMQP_PORT};Username=${AMQP_USERNAME};Password=${AMQP_PASSWORD};ProvidedName=AiService
         - ORIGINAL_FILES_DIRECTORY=/var/lib/localStorage/files/original
         - PROCESSED_FILES_DIRECTORY=/var/lib/localStorage/files/processed
-        - API_URL=${API_HTTPS_URL}
+        - API_URL=${API_URL}
     container_name: object_detection_aiservice
     restart: unless-stopped
     volumes:

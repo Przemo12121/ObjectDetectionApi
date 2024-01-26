@@ -13,6 +13,7 @@ public class ProcessedFilesController : BaseController
     public ProcessedFilesController(IMediator mediator)
         =>  _mediator = mediator;
 
+    // [Authorize]
     [HttpGet, Route("{id:guid}")]
     public async Task<IActionResult> Download([FromQuery] Guid id)
     {
@@ -23,6 +24,7 @@ public class ProcessedFilesController : BaseController
         return MapResponse(response);
     }
     
+    // [Authorize]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
@@ -33,6 +35,7 @@ public class ProcessedFilesController : BaseController
         return MapResponse(response);
     }
     
+    // [Authorize]
     [HttpDelete, Route("${id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
@@ -43,6 +46,7 @@ public class ProcessedFilesController : BaseController
         return MapResponse(response);
     }
     
+    // [Authorize] 
     [HttpPatch, Route("${id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProcessedFilePayload payload)
     {

@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
+WORKDIR /App
+ADD ./Src/Api ./Src/Api
+ADD ./Src/Application ./Src/Application
+ADD ./Src/Infrastructure ./Src/Infrastructure
+ADD ./Src/Domain ./Src/Domain
+
+WORKDIR /App/Src/Api
+RUN dotnet restore
+RUN dotnet publish -c Release -o ../../Out
+
+FROM mcr.microsoft.com/dotnet/runtime:7.0
+
+ARG ORIGINAL_FILES_DIRECTORY
+ENV original_dir=$ORIGINAL_FILES_DIRECTORY
+
+ARG PROCESSED_FILES_DIRECTORY
+ENV processed_dir=$PROCESSED_FILES_DIRECTORY
+
+ARG RABBIT_CONNECTION_STRING
+ENV rabbit_conn=$RABBIT_CONNECTION_STRING
+
+WORKDIR /Api
+COPY --from=build ./App/Out .
+
+ENTRYPOINT dotnet Api.dll $original_dir $processed_dir $rabbit_conn

@@ -14,6 +14,7 @@ public class OriginalFilesController : BaseController
     public OriginalFilesController(IMediator mediator)
         =>  _mediator = mediator;
 
+    // [Authorize]
     [HttpPost, Route("")]
     public async Task<IActionResult> Upload<T>([FromForm] IFormFile? file)
     {
@@ -27,7 +28,7 @@ public class OriginalFilesController : BaseController
         return MapResponse(response);
     }
     
-    [Authorize]
+    // [Authorize]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetList([FromQuery] FilePaginationPayload payload)
     {
@@ -38,6 +39,7 @@ public class OriginalFilesController : BaseController
         return MapResponse(response);
     }
     
+    // [Authorize]
     [HttpDelete, Route("${id:guid}")]
     public async Task<IActionResult> Delete<T>([FromRoute] Guid id)
     {
