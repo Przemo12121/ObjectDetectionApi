@@ -47,6 +47,8 @@ public sealed class ProcessedFilesRepository : BaseRepository, IProcessedFileRep
             _ => query
         };
         
+        query = query.Include(file => file.Owner);
+        
         var totalCount = await query.CountAsync();
         var files = await configurePagination(new FilePaginationBuilder<ProcessedFile>(query))
             .Build()

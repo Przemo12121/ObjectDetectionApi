@@ -24,7 +24,8 @@ public sealed class LocalFileStorage<T> : IFileStorage<T>, IStorage
         
         FilePath path = $"{ownerDirectoryName}/{Guid.NewGuid():N}";
         var file = File.Create($"{_directoryGlobalPath}/{path}");
-        
+
+        stream.Position = 0;
         await stream.CopyToAsync(file);
         await file.FlushAsync();
         file.Close();

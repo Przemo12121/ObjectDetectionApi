@@ -24,13 +24,15 @@ public static class ProgramExtensions
 {
     public static void ConfigureDatabase(this WebApplicationBuilder builder)
     {
-        builder.Services.AddTransient<DbContextOptions<ObjectDetectionDbContext>>(
-            _ => new DbContextOptionsBuilder<ObjectDetectionDbContext>()
-                .UseNpgsql(builder.Configuration.GetConnectionString("ObjectDetectionDb"), b => b.MigrationsAssembly("Api"))
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .Options);
+        var options = new DbContextOptionsBuilder<ObjectDetectionDbContext>()
+            .UseNpgsql(builder.Configuration.GetConnectionString("ObjectDetectionDb"), b => b.MigrationsAssembly("Api"))
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .Options;
         
+        builder.Services.AddTransient<DbContextOptions<ObjectDetectionDbContext>>(_ => options);
         builder.Services.AddDbContext<ObjectDetectionDbContext>();
+        
+        new ObjectDetectionDbContext(options).Database.Migrate();
     }
 
     public static void ConfigureFileStorages(this WebApplicationBuilder builder)

@@ -7,7 +7,7 @@ public sealed class ProcessedFile : UniqueEntity, IProcessedFile
     private readonly HashSet<AccessAccount> _viewers;
 
     public StorageData StorageData { get; }
-    public ServeData ServeData { get; }
+    public ServeData ServeData { get; set; }
     public Metadata Metadata { get; }
     public AccessAccount Owner { get; }
 

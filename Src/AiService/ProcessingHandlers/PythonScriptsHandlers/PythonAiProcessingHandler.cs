@@ -82,7 +82,7 @@ public class PythonAiProcessingHandler : IProcessingHandler
             new ServeData(""),
             Array.Empty<AccessAccount>());
 
-        newFile.ServeData.Url = _urlFactory.Create(newFile);
+        newFile.ServeData = new(_urlFactory.Create(newFile));
 
         var newFileFullPath = _processedFilesStorage.GetFullPath(newFile);
         var originalFileFullPath = _originalFilesStorage.GetFullPath(file);

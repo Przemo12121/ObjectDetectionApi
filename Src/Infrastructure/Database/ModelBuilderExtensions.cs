@@ -39,6 +39,10 @@ public static class ModelBuilderExtensions
                 model.HasKey(m => m.Id);
                 model.OwnsOne(m => m.Metadata);
                 model.OwnsOne(m => m.StorageData);
+                // model.Property(m => m.Owner)
+                //     .HasConversion(
+                //         v => v.Id,
+                //         v => AccessAccount.Create(v));
             });
     }
     
